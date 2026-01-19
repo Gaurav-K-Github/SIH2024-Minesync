@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Development Timeline - MineSafe Pro</title>
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#fbbf24">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body{display:grid;grid-template-columns:1fr;grid-template-rows:auto 1fr;min-height:100vh}.sidebar{grid-row:1/-1;background:var(--bg-secondary);border-right:1px solid var(--border-color);padding:1rem 0.5rem;display:flex;flex-direction:column;position:fixed;width:70px;height:100vh;overflow-y:auto;overflow-x:hidden;transition:width .3s ease,padding .3s ease;z-index:1000}.sidebar:hover{width:260px;padding:1.5rem}.sidebar-header{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border-color);overflow:hidden;transition:flex-direction .3s ease,gap .3s ease;cursor:pointer}.sidebar-header:hover{background:var(--bg-hover);border-radius:8px}.sidebar:hover .sidebar-header{flex-direction:row;gap:.75rem;justify-content:flex-start}.sidebar-header h3,.sidebar-header p{white-space:nowrap;opacity:0;width:0;height:0;overflow:hidden;transition:opacity .3s ease,width .3s ease,height .3s ease}.sidebar:hover .sidebar-header h3,.sidebar:hover .sidebar-header p{opacity:1;width:auto;height:auto}.sidebar-logo{width:40px;height:40px;background:linear-gradient(135deg,var(--accent-orange),var(--warning-yellow));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0;transition:width .3s ease,height .3s ease,font-size .3s ease}.sidebar:hover .sidebar-logo{width:48px;height:48px;font-size:1.5rem}.nav-item{display:flex;align-items:center;justify-content:center;gap:0;padding:.875rem 0.5rem;border-radius:8px;color:var(--text-secondary);text-decoration:none;margin-bottom:.25rem;transition:all .2s;white-space:nowrap;overflow:hidden}.sidebar:hover .nav-item{justify-content:flex-start;gap:.75rem;padding:.875rem 1rem}.nav-item i{width:20px;text-align:center;flex-shrink:0;font-size:1.1rem}.nav-item span{opacity:0;width:0;overflow:hidden;transition:opacity .3s ease,width .3s ease}.sidebar:hover .nav-item span{opacity:1;width:auto}.nav-item:hover{background:var(--bg-hover);color:var(--text-primary)}.nav-item.active{background:rgba(249,115,22,.1);color:var(--accent-orange);font-weight:600}.topbar{background:var(--bg-card);border-bottom:1px solid var(--border-color);padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;margin-left:70px;transition:margin-left .3s ease}.search-bar{flex:1;max-width:350px;position:relative}.search-bar input{width:100%;padding:.625rem 1rem .625rem 2.5rem;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary)}.search-bar i{position:absolute;left:.875rem;top:50%;transform:translateY(-50%);color:var(--text-muted)}.topbar-actions{display:flex;align-items:center;gap:.5rem}.user-avatar{width:32px;height:32px;background:linear-gradient(135deg,var(--accent-orange),var(--warning-yellow));border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:.875rem}.main-content{padding:2rem;margin-left:70px;overflow-y:auto;transition:margin-left .3s ease}
+    
+    .timeline-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      position: relative;
+      padding-bottom: 1rem;
+    }
+    
+    .timeline-line {
+      position: absolute;
+      left: 27.5px;
+      top: 0;
+      bottom: 200px;
+      width: 4px;
+      background: linear-gradient(180deg, var(--accent-orange) 0%, var(--warning-yellow) 100%);
+      opacity: 0.4;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(249, 115, 22, 0.3);
+    }
+    
+    .timeline-item {
+      position: relative;
+      padding-left: 80px;
+      margin-bottom: 2rem;
+    }
+    
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+    
+    .timeline-marker {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--accent-orange) 0%, var(--warning-yellow) 100%);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: white;
+      box-shadow: 0 8px 24px rgba(249, 115, 22, 0.35), 0 0 0 4px var(--bg-primary), 0 0 0 6px rgba(249, 115, 22, 0.2);
+      z-index: 1;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .timeline-marker:hover {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 12px 32px rgba(249, 115, 22, 0.5), 0 0 0 4px var(--bg-primary), 0 0 0 8px rgba(249, 115, 22, 0.3);
+    }
+    
+    .timeline-content {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .timeline-content::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-orange), var(--warning-yellow));
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    
+    .timeline-content:hover {
+      box-shadow: 0 12px 40px rgba(249, 115, 22, 0.2), 0 0 0 1px var(--accent-orange);
+      transform: translateX(8px) translateY(-4px);
+      border-color: transparent;
+    }
+    
+    .timeline-content:hover::before {
+      opacity: 1;
+    }
+    
+    .timeline-date {
+      display: inline-block;
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(251, 191, 36, 0.15));
+      color: var(--accent-orange);
+      padding: 0.375rem 1rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.875rem;
+      border: 1px solid rgba(249, 115, 22, 0.2);
+      backdrop-filter: blur(10px);
+    }
+    
+    .timeline-title {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .version-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--accent-orange) 0%, var(--warning-yellow) 100%);
+      color: white;
+      padding: 0.375rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+      transition: all 0.3s;
+    }
+    
+    .timeline-content:hover .version-badge {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(249, 115, 22, 0.4);
+    }
+    
+    .timeline-description {
+      color: var(--text-secondary);
+      line-height: 1.5;
+      margin-bottom: 0.75rem;
+      font-size: 0.9375rem;
+    }
+    
+    .timeline-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .timeline-tag {
+      display: inline-block;
+      padding: 0.375rem 0.875rem;
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+      transition: all 0.3s;
+      backdrop-filter: blur(10px);
+    }
+    
+    .timeline-tag:hover {
+      background: rgba(249, 115, 22, 0.1);
+      border-color: var(--accent-orange);
+      color: var(--accent-orange);
+      transform: translateY(-2px);
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+    
+    .stat-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 1.75rem;
+      border: 1px solid var(--border-color);
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(249, 115, 22, 0.1), transparent);
+      transition: left 0.6s;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 48px rgba(249, 115, 22, 0.2);
+      border-color: var(--accent-orange);
+    }
+    
+    .stat-card:hover::before {
+      left: 100%;
+    }
+    
+    .stat-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, var(--accent-orange) 0%, var(--warning-yellow) 100%);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      color: white;
+      margin: 0 auto 1rem;
+      box-shadow: 0 8px 24px rgba(249, 115, 22, 0.3);
+      transition: all 0.4s;
+    }
+    
+    .stat-card:hover .stat-icon {
+      transform: scale(1.1) rotate(-5deg);
+      box-shadow: 0 12px 32px rgba(249, 115, 22, 0.4);
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+    
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+    
+    .mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--bg-card);border-top:1px solid var(--border-color);padding:.5rem;z-index:998}.mobile-nav-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem}.mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:.25rem;padding:.5rem;border-radius:8px;color:var(--text-secondary);text-decoration:none;font-size:.75rem}.mobile-nav-item.active{color:var(--accent-orange);background:rgba(249,115,22,.1)}
+    
+    @media (max-width:1024px){body{grid-template-columns:1fr}.sidebar{transform:translateX(-100%)}.topbar,.main-content{margin-left:0}.mobile-nav{display:block}.main-content{padding-bottom:5rem}}
+    @media (max-width:768px){.stats-grid{grid-template-columns:repeat(2,1fr)}.timeline-item{padding-left:60px}.timeline-marker{width:45px;height:45px;font-size:1.2rem}}
+    @media (max-width:640px){.main-content{padding:1rem}.stats-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <a href="timeline.html" style="text-decoration:none;color:inherit">
+      <div class="sidebar-header">
+        <div class="sidebar-logo"><i class="fas fa-hard-hat"></i></div>
+        <div><h3 style="font-weight:700;font-size:1.125rem">MineSafe Pro</h3><p style="font-size:.75rem;color:var(--text-muted)">Safety First</p></div>
+      </div>
+    </a>
+    <nav style="flex:1">
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
+      <a href="safety.html" class="nav-item"><i class="fas fa-shield-alt"></i><span>Safety Monitoring</span></a>
+      <a href="incidents.html" class="nav-item"><i class="fas fa-exclamation-circle"></i><span>Incidents</span></a>
+      <a href="productivity.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Productivity</span></a>
+      <a href="equipment.html" class="nav-item"><i class="fas fa-cogs"></i><span>Equipment</span></a>
+      <a href="reports.html" class="nav-item"><i class="fas fa-file-alt"></i><span>Reports</span></a>
+      <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i><span>Profile</span></a>
+    </nav>
+    <div style="padding-top:1rem;border-top:1px solid var(--border-color)"><a href="#" onclick="logout()" class="nav-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></div>
+  </div>
+  
+  <div class="topbar">
+    <div class="search-bar"><i class="fas fa-search"></i><input type="text" placeholder="Search timeline..."></div>
+    <div class="topbar-actions">
+      <div style="display:flex;align-items:center;gap:0.5rem">
+        <div class="user-avatar">JD</div>
+        <span style="font-size:.875rem;font-weight:600;color:var(--text-primary)">John Doe</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="main-content">
+    <div class="page-header" style="text-align:center;margin-bottom:2rem">
+      <h1 style="font-size:2.5rem;font-weight:700;margin-bottom:.5rem;background:linear-gradient(135deg,var(--accent-orange),var(--warning-yellow));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">
+        <i class="fas fa-timeline"></i> MineSafe Pro Development Timeline
+      </h1>
+      <p style="color:var(--text-secondary);font-size:1.125rem">October 2024 - Present | v1.0 to v2.1</p>
+    </div>
+    
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-calendar-alt"></i></div>
+        <div class="stat-value">4 Mo</div>
+        <div class="stat-label">Development Time</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-file-code"></i></div>
+        <div class="stat-value">8</div>
+        <div class="stat-label">Pages Built</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-code-branch"></i></div>
+        <div class="stat-value">v2.1</div>
+        <div class="stat-label">Current Version</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-mobile-alt"></i></div>
+        <div class="stat-value">100%</div>
+        <div class="stat-label">PWA Ready</div>
+      </div>
+    </div>
+    
+    <div class="timeline-container">
+      <div class="timeline-line"></div>
+      
+      <div class="timeline-item">
+        <div class="timeline-marker"><i class="fas fa-lightbulb"></i></div>
+        <div class="timeline-content">
+          <div class="timeline-date">October 2024</div>
+          <div class="timeline-title">
+            Initial Release - Project Foundation
+            <span class="version-badge">v1.0</span>
+          </div>
+          <div class="timeline-description">
+            Launched MineSafe Pro with core safety monitoring features. Built responsive UI with dark industrial theme, implemented basic dashboard, and established project architecture with HTML/CSS/JavaScript.
+          </div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Initial Release</span>
+            <span class="timeline-tag">Core Features</span>
+            <span class="timeline-tag">Dashboard</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-marker"><i class="fas fa-chart-line"></i></div>
+        <div class="timeline-content">
+          <div class="timeline-date">November 2024</div>
+          <div class="timeline-title">
+            Data Visualization Enhancement
+            <span class="version-badge">v1.2</span>
+          </div>
+          <div class="timeline-description">
+            Integrated Chart.js for production and incident analytics. Added safety, productivity, equipment, and incident reporting pages. Implemented real-time monitoring dashboards with interactive charts.
+          </div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Chart.js</span>
+            <span class="timeline-tag">Analytics</span>
+            <span class="timeline-tag">Multi-page</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-marker"><i class="fas fa-mobile-alt"></i></div>
+        <div class="timeline-content">
+          <div class="timeline-date">November 2024</div>
+          <div class="timeline-title">
+            Progressive Web App (PWA)
+            <span class="version-badge">v1.5</span>
+          </div>
+          <div class="timeline-description">
+            Transformed into a PWA with manifest.json and service worker. Enabled offline functionality, installability, and mobile-first responsive design with dedicated mobile navigation.
+          </div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">PWA</span>
+            <span class="timeline-tag">Offline</span>
+            <span class="timeline-tag">Mobile First</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-marker"><i class="fas fa-bars"></i></div>
+        <div class="timeline-content">
+          <div class="timeline-date">December 2024</div>
+          <div class="timeline-title">
+            Advanced Navigation & UX
+            <span class="version-badge">v1.8</span>
+          </div>
+          <div class="timeline-description">
+            Implemented hover-to-expand sidebar with smooth animations. Added floating emergency evacuation button with protocol modal. Enhanced cross-page navigation consistency and user interaction patterns.
+          </div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Sidebar</span>
+            <span class="timeline-tag">Emergency Feature</span>
+            <span class="timeline-tag">UX</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-marker"><i class="fas fa-table"></i></div>
+        <div class="timeline-content">
+          <div class="timeline-date">December 2024</div>
+          <div class="timeline-title">
+            Data Tables & Components
+            <span class="version-badge">v2.0</span>
+          </div>
+          <div class="timeline-description">
+            Redesigned tables with proper card structure, headers, and responsive behavior. Improved badge system for status indicators. Enhanced chart responsiveness and fixed auto-sizing issues across all pages.
+          </div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Tables</span>
+            <span class="timeline-tag">Cards</span>
+            <span class="timeline-tag">Components</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-marker"><i class="fas fa-magic"></i></div>
+        <div class="timeline-content">
+          <div class="timeline-date">January 2026</div>
+          <div class="timeline-title">
+            UI Polish & Timeline Feature
+            <span class="version-badge">v2.1</span>
+          </div>
+          <div class="timeline-description">
+            Simplified header to compact design. Standardized card structures with headers across all pages. Added development timeline page accessible via logo. Final UI refinements for production deployment.
+          </div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">UI Polish</span>
+            <span class="timeline-tag">Timeline Page</span>
+            <span class="timeline-tag">Production Ready</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="timeline-item">
+        <div class="timeline-marker"><i class="fas fa-server"></i></div>
+        <div class="timeline-content">
+          <div class="timeline-date">Q1 2026 (Planned)</div>
+          <div class="timeline-title">
+            Backend Integration & API
+            <span class="version-badge">v3.0</span>
+          </div>
+          <div class="timeline-description">
+            Plan to integrate Node.js/Express backend with MongoDB database. Implementation of REST APIs for real-time data synchronization, user authentication, and role-based access control. WebSocket integration for live sensor data streaming.
+          </div>
+          <div class="timeline-tags">
+            <span class="timeline-tag">Backend</span>
+            <span class="timeline-tag">REST API</span>
+            <span class="timeline-tag">Database</span>
+            <span class="timeline-tag">WebSocket</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card" style="margin-top:2rem;text-align:center;background:linear-gradient(135deg,rgba(249,115,22,0.1),rgba(251,191,36,0.1));border-color:var(--accent-orange)">
+      <h3 style="font-size:1.5rem;font-weight:700;margin-bottom:1rem;color:var(--text-primary)">
+        <i class="fas fa-rocket" style="color:var(--accent-orange)"></i> Continuous Evolution
+      </h3>
+      <p style="color:var(--text-secondary);line-height:1.6;max-width:700px;margin:0 auto">
+        MineSafe Pro has evolved from a concept in October 2024 to a production-ready PWA by January 2026. 
+        With upcoming backend integration and IoT capabilities, we're committed to enhancing mine safety through innovative technology. 
+        The journey continues with v3.0 and beyond!
+      </p>
+    </div>
+  </div>
+  
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav">
+    <div class="mobile-nav-grid">
+      <a href="dashboard.html" class="mobile-nav-item">
+        <i class="fas fa-th-large"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="safety.html" class="mobile-nav-item">
+        <i class="fas fa-shield-alt"></i>
+        <span>Safety</span>
+      </a>
+      <a href="incidents.html" class="mobile-nav-item">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Incidents</span>
+      </a>
+      <a href="equipment.html" class="mobile-nav-item">
+        <i class="fas fa-cogs"></i>
+        <span>Equipment</span>
+      </a>
+      <a href="profile.html" class="mobile-nav-item">
+        <i class="fas fa-user-circle"></i>
+        <span>Profile</span>
+      </a>
+    </div>
+  </div>
+  
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Equipment - MineSafe Pro</title>
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#fbbf24">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body{display:grid;grid-template-columns:1fr;grid-template-rows:auto 1fr;min-height:100vh}.sidebar{grid-row:1/-1;background:var(--bg-secondary);border-right:1px solid var(--border-color);padding:1rem 0.5rem;display:flex;flex-direction:column;position:fixed;width:70px;height:100vh;overflow-y:auto;overflow-x:hidden;transition:width .3s ease,padding .3s ease;z-index:1000}.sidebar:hover{width:260px;padding:1.5rem}.sidebar-header{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.5rem;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border-color);overflow:hidden;transition:flex-direction .3s ease,gap .3s ease}.sidebar:hover .sidebar-header{flex-direction:row;gap:.75rem;justify-content:flex-start}.sidebar-header h3,.sidebar-header p{white-space:nowrap;opacity:0;width:0;height:0;overflow:hidden;transition:opacity .3s ease,width .3s ease,height .3s ease}.sidebar:hover .sidebar-header h3,.sidebar:hover .sidebar-header p{opacity:1;width:auto;height:auto}.sidebar-logo{width:40px;height:40px;background:linear-gradient(135deg,var(--accent-orange),var(--warning-yellow));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;flex-shrink:0;transition:width .3s ease,height .3s ease,font-size .3s ease}.sidebar:hover .sidebar-logo{width:48px;height:48px;font-size:1.5rem}.nav-item{display:flex;align-items:center;justify-content:center;gap:0;padding:.875rem 0.5rem;border-radius:8px;color:var(--text-secondary);text-decoration:none;margin-bottom:.25rem;transition:all .2s;white-space:nowrap;overflow:hidden}.sidebar:hover .nav-item{justify-content:flex-start;gap:.75rem;padding:.875rem 1rem}.nav-item i{width:20px;text-align:center;flex-shrink:0;font-size:1.1rem}.nav-item span{opacity:0;width:0;overflow:hidden;transition:opacity .3s ease,width .3s ease}.sidebar:hover .nav-item span{opacity:1;width:auto}.nav-item:hover{background:var(--bg-hover);color:var(--text-primary)}.nav-item.active{background:rgba(249,115,22,.1);color:var(--accent-orange);font-weight:600}.nav-item i{width:20px;text-align:center}.topbar{background:var(--bg-card);border-bottom:1px solid var(--border-color);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;margin-left:70px;transition:margin-left .3s ease}.search-bar{flex:1;max-width:400px;position:relative}.search-bar input{width:100%;padding:.625rem 1rem .625rem 2.5rem;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary)}.search-bar i{position:absolute;left:.875rem;top:50%;transform:translateY(-50%);color:var(--text-muted)}.topbar-actions{display:flex;align-items:center;gap:1rem}.icon-btn{width:40px;height:40px;display:flex;align-items:center;justify-content:center;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:8px;cursor:pointer;position:relative}.notification-badge{position:absolute;top:-4px;right:-4px;width:18px;height:18px;background:var(--danger-red);border-radius:50%;font-size:.625rem;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg-card)}.user-menu{display:flex;align-items:center;gap:.75rem;padding:.5rem;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:8px}.user-avatar{width:36px;height:36px;background:linear-gradient(135deg,var(--accent-orange),var(--warning-yellow));border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600}.main-content{padding:2rem;margin-left:70px;overflow-y:auto;transition:margin-left .3s ease}.eq-card{background:var(--bg-card);border-radius:12px;padding:1.5rem;border:1px solid var(--border-color);display:flex;gap:1.5rem;align-items:center}.eq-icon{width:64px;height:64px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:2rem;flex-shrink:0}.eq-icon.active{background:rgba(16,185,129,.15);color:var(--safety-green)}.eq-icon.repair{background:rgba(239,68,68,.15);color:var(--danger-red)}.eq-icon.maint{background:rgba(251,191,36,.15);color:var(--warning-yellow)}.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--bg-card);border-top:1px solid var(--border-color);padding:.5rem;z-index:998}.mobile-nav-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem}.mobile-nav-item{display:flex;flex-direction:column;align-items:center;gap:.25rem;padding:.5rem;border-radius:8px;color:var(--text-secondary);text-decoration:none;font-size:.75rem}.mobile-nav-item.active{color:var(--accent-orange);background:rgba(249,115,22,.1)}@media (max-width:1024px){body{grid-template-columns:1fr}.sidebar{transform:translateX(-100%)}.topbar,.main-content{margin-left:0}.mobile-nav{display:block}.main-content{padding-bottom:5rem}}@media (max-width:640px){.main-content{padding:1rem}}
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="sidebar-header"><div class="sidebar-logo"><i class="fas fa-hard-hat"></i></div><div><h3 style="font-weight:700;font-size:1.125rem">MineSafe Pro</h3><p style="font-size:.75rem;color:var(--text-muted)">Safety First</p></div></div>
+    <nav style="flex:1">
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
+      <a href="safety.html" class="nav-item"><i class="fas fa-shield-alt"></i><span>Safety Monitoring</span></a>
+      <a href="incidents.html" class="nav-item"><i class="fas fa-exclamation-circle"></i><span>Incidents</span></a>
+      <a href="productivity.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Productivity</span></a>
+      <a href="equipment.html" class="nav-item active"><i class="fas fa-cogs"></i><span>Equipment</span></a>
+      <a href="reports.html" class="nav-item"><i class="fas fa-file-alt"></i><span>Reports</span></a>
+      <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i><span>Profile</span></a>
+    </nav>
+    <div style="padding-top:1rem;border-top:1px solid var(--border-color)"><a href="#" onclick="logout()" class="nav-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></div>
+  </div>
+  <div class="topbar">
+    <div class="search-bar"><i class="fas fa-search"></i><input type="text" placeholder="Search equipment..."></div>
+    <div class="topbar-actions">
+      <div style="display:flex;align-items:center;gap:0.5rem">
+        <div class="user-avatar">JD</div>
+        <span style="font-size:.875rem;font-weight:600;color:var(--text-primary)">John Doe</span>
+      </div>
+    </div>
+  </div>
+  <div class="main-content">
+    <div class="page-header" style="margin-bottom:2rem"><h1 style="font-size:2rem;font-weight:700;margin-bottom:.5rem"><i class="fas fa-cogs"></i> Equipment Monitoring</h1><p style="color:var(--text-secondary)">Track equipment status and maintenance schedules</p></div>
+    <div class="grid-2" style="margin-bottom:2rem">
+      <div class="eq-card"><div class="eq-icon active"><i class="fas fa-hammer"></i></div><div style="flex:1"><h4 style="font-weight:600;font-size:1.125rem;margin-bottom:.5rem">Excavator #A-12</h4><p style="color:var(--text-secondary);font-size:.875rem;margin-bottom:.5rem">Zone A - Active</p><span class="badge badge-success">Operational</span></div><button class="btn btn-primary" style="padding:.5rem 1rem">Details</button></div>
+      <div class="eq-card"><div class="eq-icon active"><i class="fas fa-truck"></i></div><div style="flex:1"><h4 style="font-weight:600;font-size:1.125rem;margin-bottom:.5rem">Dump Truck #T-08</h4><p style="color:var(--text-secondary);font-size:.875rem;margin-bottom:.5rem">Zone B - Active</p><span class="badge badge-success">Operational</span></div><button class="btn btn-primary" style="padding:.5rem 1rem">Details</button></div>
+      <div class="eq-card"><div class="eq-icon maint"><i class="fas fa-hard-hat"></i></div><div style="flex:1"><h4 style="font-weight:600;font-size:1.125rem;margin-bottom:.5rem">Drill Machine #D-03</h4><p style="color:var(--text-secondary);font-size:.875rem;margin-bottom:.5rem">Maintenance Bay</p><span class="badge badge-warning">Under Maintenance</span></div><button class="btn btn-primary" style="padding:.5rem 1rem">Details</button></div>
+      <div class="eq-card"><div class="eq-icon repair"><i class="fas fa-tools"></i></div><div style="flex:1"><h4 style="font-weight:600;font-size:1.125rem;margin-bottom:.5rem">Conveyor Belt #C-05</h4><p style="color:var(--text-secondary);font-size:.875rem;margin-bottom:.5rem">Zone C - Offline</p><span class="badge badge-danger">Needs Repair</span></div><button class="btn btn-primary" style="padding:.5rem 1rem">Details</button></div>
+      <div class="eq-card"><div class="eq-icon active"><i class="fas fa-wind"></i></div><div style="flex:1"><h4 style="font-weight:600;font-size:1.125rem;margin-bottom:.5rem">Ventilation Fan #V-02</h4><p style="color:var(--text-secondary);font-size:.875rem;margin-bottom:.5rem">Zone D - Active</p><span class="badge badge-success">Operational</span></div><button class="btn btn-primary" style="padding:.5rem 1rem">Details</button></div>
+      <div class="eq-card"><div class="eq-icon active"><i class="fas fa-lightbulb"></i></div><div style="flex:1"><h4 style="font-weight:600;font-size:1.125rem;margin-bottom:.5rem">Lighting System #L-01</h4><p style="color:var(--text-secondary);font-size:.875rem;margin-bottom:.5rem">All Zones - Active</p><span class="badge badge-success">Operational</span></div><button class="btn btn-primary" style="padding:.5rem 1rem">Details</button></div>
+    </div>
+    
+    <div class="card">
+      <div class="card-header">
+        <h3 style="font-size:1.25rem;font-weight:600;margin:0"><i class="fas fa-calendar-alt"></i> Maintenance Schedule</h3>
+      </div>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Equipment</th>
+              <th>Type</th>
+              <th>Last Service</th>
+              <th>Next Service</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Excavator #A-12</td>
+              <td>Routine Check</td>
+              <td>Jan 15, 2026</td>
+              <td>Feb 15, 2026</td>
+              <td><span class="badge badge-success">On Schedule</span></td>
+              <td><button class="btn btn-primary" style="padding:.5rem 1rem">View</button></td>
+            </tr>
+            <tr>
+              <td>Drill Machine #D-03</td>
+              <td>Major Service</td>
+              <td>Jan 18, 2026</td>
+              <td>Jan 20, 2026</td>
+              <td><span class="badge badge-warning">In Progress</span></td>
+              <td><button class="btn btn-primary" style="padding:.5rem 1rem">View</button></td>
+            </tr>
+            <tr>
+              <td>Conveyor Belt #C-05</td>
+              <td>Repair</td>
+              <td>Dec 20, 2025</td>
+              <td>Jan 22, 2026</td>
+              <td><span class="badge badge-danger">Overdue</span></td>
+              <td><button class="btn btn-primary" style="padding:.5rem 1rem">View</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav">
+    <div class="mobile-nav-grid">
+      <a href="dashboard.html" class="mobile-nav-item">
+        <i class="fas fa-th-large"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="safety.html" class="mobile-nav-item">
+        <i class="fas fa-shield-alt"></i>
+        <span>Safety</span>
+      </a>
+      <a href="incidents.html" class="mobile-nav-item">
+        <i class="fas fa-file-medical"></i>
+        <span>Report</span>
+      </a>
+      <a href="productivity.html" class="mobile-nav-item">
+        <i class="fas fa-chart-line"></i>
+        <span>Production</span>
+      </a>
+      <a href="profile.html" class="mobile-nav-item active">
+        <i class="fas fa-cogs"></i>
+        <span>Equipment</span>
+      </a>
+    </div>
+  </div>
+  
+  <script src="../assets/js/app.js"></script>
+</body>
+</html>

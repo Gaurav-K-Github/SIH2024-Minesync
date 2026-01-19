@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - MineSafe Pro</title>
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#fbbf24">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  
+  <style>
+    body {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: auto 1fr auto;
+      min-height: 100vh;
+      transition: grid-template-columns 0.3s ease;
+    }
+    
+    /* Sidebar */
+    .sidebar {
+      grid-row: 1 / -1;
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border-color);
+      padding: 1rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      width: 70px;
+      height: 100vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      transition: width 0.3s ease, padding 0.3s ease;
+      z-index: 1000;
+    }
+    
+    .sidebar:hover {
+      width: 260px;
+      padding: 1.5rem;
+    }
+    
+    .sidebar-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      overflow: hidden;
+      transition: flex-direction 0.3s ease, gap 0.3s ease;
+    }
+    
+    .sidebar:hover .sidebar-header {
+      flex-direction: row;
+      gap: 0.75rem;
+      justify-content: flex-start;
+    }
+    
+    .sidebar-header h2 {
+      white-space: nowrap;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+      transition: opacity 0.3s ease, width 0.3s ease, height 0.3s ease;
+      font-size: 1.25rem;
+    }
+    
+    .sidebar:hover .sidebar-header h2 {
+      opacity: 1;
+      width: auto;
+      height: auto;
+    }
+    
+    .sidebar-logo {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, var(--accent-orange), var(--warning-yellow));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      transition: width 0.3s ease, height 0.3s ease, font-size 0.3s ease;
+    }
+    
+    .sidebar:hover .sidebar-logo {
+      width: 48px;
+      height: 48px;
+      font-size: 1.5rem;
+    }
+    
+    .nav-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding: 0.875rem 0.5rem;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      margin-bottom: 0.25rem;
+      transition: all 0.2s;
+      white-space: nowrap;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .sidebar:hover .nav-item {
+      justify-content: flex-start;
+      gap: 0.75rem;
+      padding: 0.875rem 1rem;
+    }
+    
+    .nav-item i {
+      width: 20px;
+      text-align: center;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+      margin: 0;
+    }
+    
+    .nav-item span {
+      opacity: 0;
+      width: 0;
+      overflow: hidden;
+      transition: opacity 0.3s ease, width 0.3s ease;
+    }
+    
+    .sidebar:hover .nav-item span {
+      opacity: 1;
+      width: auto;
+    }
+    
+    .nav-item:hover {
+      background: var(--bg-hover);
+      color: var(--text-primary);
+    }
+    
+    .nav-item.active {
+      background: rgba(249, 115, 22, 0.1);
+      color: var(--accent-orange);
+      font-weight: 600;
+    }
+    
+    .nav-item i {
+      width: 20px;
+      text-align: center;
+    }
+    
+    /* Top Bar */
+    .topbar {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-left: 70px;
+      transition: margin-left 0.3s ease;
+    }
+    
+    .search-bar {
+      flex: 1;
+      max-width: 350px;
+      position: relative;
+    }
+    
+    .search-bar input {
+      width: 100%;
+      padding: 0.5rem 0.875rem 0.5rem 2.25rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-size: 0.875rem;
+    }
+    
+    .search-bar i {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);  
+      color: var(--text-muted);
+      font-size: 0.875rem;
+    }
+    
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+    }
+    
+    .icon-btn {
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      position: relative;
+      font-size: 0.875rem;
+    }
+    
+    .icon-btn:hover {
+      background: var(--bg-hover);
+    }
+    
+    .notification-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 18px;
+      height: 18px;
+      background: var(--danger-red);
+      border-radius: 50%;
+      font-size: 0.625rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid var(--bg-card);
+    }
+    
+    .user-menu {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.375rem 0.75rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--accent-orange), var(--warning-yellow));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.75rem;
+    }
+    
+    /* Main Content */
+    .main-content {
+      padding: 2rem;
+      margin-left: 70px;
+      overflow-y: auto;
+      transition: margin-left 0.3s ease;
+    }
+    
+    /* Section Spacing */
+    .section {
+      margin-bottom: 2rem;
+    }
+    
+    .page-header {
+      margin-bottom: 2.5rem;
+    }
+    
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .page-header p {
+      color: var(--text-secondary);
+      margin-bottom: 0;
+    }
+    
+    /* KPI Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+    
+    .kpi-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent-orange), var(--warning-yellow));
+    }
+    
+    .kpi-card.success::before { background: var(--safety-green); }
+    .kpi-card.warning::before { background: var(--warning-yellow); }
+    .kpi-card.danger::before { background: var(--danger-red); }
+    
+    .kpi-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    
+    .kpi-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+    
+    .kpi-icon.success { background: rgba(16, 185, 129, 0.15); color: var(--safety-green); }
+    .kpi-icon.warning { background: rgba(251, 191, 36, 0.15); color: var(--warning-yellow); }
+    .kpi-icon.danger { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); }
+    .kpi-icon.primary { background: rgba(249, 115, 22, 0.15); color: var(--accent-orange); }
+    
+    .kpi-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .kpi-label {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+    
+    .kpi-change {
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+    
+    .kpi-change.positive { color: var(--safety-green); }
+    .kpi-change.negative { color: var(--danger-red); }
+    
+    /* Charts */
+    .chart-container {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 1px solid var(--border-color);
+      height: 320px;
+    }
+    
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .chart-header h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+    }
+    
+    /* Tables */
+    .table-container {
+      background: var(--bg-card);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    thead {
+      background: var(--bg-secondary);
+    }
+    
+    th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+    
+    td {
+      padding: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+    
+    tbody tr:hover {
+      background: var(--bg-hover);
+    }
+    
+    /* Mobile Nav */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      padding: 0.5rem;
+      z-index: 998;
+    }
+    
+    .mobile-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+    }
+    
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.75rem;
+    }
+    
+    .mobile-nav-item.active {
+      color: var(--accent-orange);
+      background: rgba(249, 115, 22, 0.1);
+    }
+    
+    @media (max-width: 1024px) {
+      body {
+        grid-template-columns: 1fr;
+      }
+      
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s;
+      }
+      
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      
+      .topbar, .main-content {
+        margin-left: 0;
+      }
+      
+      .mobile-nav {
+        display: block;
+      }
+      
+      .main-content {
+        padding-bottom: 5rem;
+      }
+      
+      .emergency-btn {
+        bottom: 6rem;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .main-content {
+        padding: 1rem;
+      }
+      
+      .topbar {
+        padding: 1rem;
+      }
+      
+      .search-bar {
+        display: none;
+      }
+      
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Emergency Button */
+    .emergency-btn {
+      position: fixed;
+      bottom: 5rem;
+      right: 1rem;
+      width: 70px;
+      height: 70px;
+      background: var(--danger-red);
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4);
+      z-index: 999;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+    
+    .emergency-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 32px rgba(239, 68, 68, 0.6);
+    }
+    
+    .emergency-btn i {
+      font-size: 2rem;
+      color: white;
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4), 0 0 0 0 rgba(239, 68, 68, 0.7);
+      }
+      50% {
+        box-shadow: 0 8px 24px rgba(239, 68, 68, 0.4), 0 0 0 20px rgba(239, 68, 68, 0);
+      }
+    }
+    
+    /* Emergency Modal */
+    .emergency-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .emergency-modal.active {
+      display: flex;
+    }
+    
+    .emergency-content {
+      background: var(--danger-red);
+      padding: 3rem;
+      border-radius: 16px;
+      text-align: center;
+      max-width: 500px;
+      width: 90%;
+      animation: slideUp 0.4s ease;
+    }
+    
+    .emergency-icon {
+      width: 150px;
+      height: 150px;
+      background: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+    
+    .emergency-icon i {
+      font-size: 4rem;
+      color: var(--danger-red);
+      animation: ring 1s ease-in-out infinite;
+    }
+    
+    @keyframes ring {
+      0%, 100% { transform: rotate(-15deg); }
+      50% { transform: rotate(15deg); }
+    }
+    
+    .emergency-content h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 1rem;
+    }
+    
+    .emergency-content p {
+      font-size: 1.125rem;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 2rem;
+    }
+    
+    .emergency-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .emergency-actions button {
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+    
+    .btn-activate {
+      background: white;
+      color: var(--danger-red);
+    }
+    
+    .btn-activate:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .btn-cancel {
+      background: transparent;
+      color: white;
+      border: 2px solid white !important;
+    }
+    
+    .btn-cancel:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .emergency-btn {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .emergency-btn i {
+        font-size: 1.5rem;
+      }
+      
+      .emergency-content {
+        padding: 2rem;
+      }
+      
+      .emergency-icon {
+        width: 120px;
+        height: 120px;
+      }
+      
+      .emergency-icon i {
+        font-size: 3rem;
+      }
+      
+      .emergency-content h2 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <i class="fas fa-hard-hat"></i>
+      </div>
+      <h2 style="font-weight: 700; font-size: 1.125rem;">MineSafe Pro</h2>
+    </div>
+    
+    <nav style="flex: 1;">
+      <a href="dashboard.html" class="nav-item active">
+        <i class="fas fa-th-large"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="safety.html" class="nav-item">
+        <i class="fas fa-shield-alt"></i>
+        <span>Safety Monitoring</span>
+      </a>
+      <a href="incidents.html" class="nav-item">
+        <i class="fas fa-exclamation-circle"></i>
+        <span>Incidents</span>
+      </a>
+      <a href="productivity.html" class="nav-item">
+        <i class="fas fa-chart-line"></i>
+        <span>Productivity</span>
+      </a>
+      <a href="equipment.html" class="nav-item">
+        <i class="fas fa-cogs"></i>
+        <span>Equipment</span>
+      </a>
+      <a href="reports.html" class="nav-item">
+        <i class="fas fa-file-alt"></i>
+        <span>Reports</span>
+      </a>
+      <a href="profile.html" class="nav-item">
+        <i class="fas fa-user-circle"></i>
+        <span>Profile</span>
+      </a>
+    </nav>
+    
+    <div style="padding-top: 1rem; border-top: 1px solid var(--border-color);">
+      <a href="#" onclick="logout()" class="nav-item">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </div>
+  
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search workers, zones, equipment...">
+    </div>
+    
+    <div class="topbar-actions">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <div class="user-avatar">JD</div>
+        <span style="font-size: 0.875rem; font-weight: 600; color: var(--text-primary);">John Doe</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="page-header" style="margin-bottom: 1.5rem;">
+      <h1>Dashboard Overview</h1>
+      <p>Real-time mine safety and productivity monitoring</p>
+    </div>
+    
+    <!-- KPI Cards -->
+    <div class="kpi-grid section">
+      <div class="kpi-card success">
+        <div class="kpi-header">
+          <div>
+            <div class="kpi-value">248</div>
+            <div class="kpi-label">Workers Inside</div>
+            <div class="kpi-change positive">
+              <i class="fas fa-arrow-up"></i>
+              <span>+12 from yesterday</span>
+            </div>
+          </div>
+          <div class="kpi-icon success">
+            <i class="fas fa-users"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class="kpi-card warning">
+        <div class="kpi-header">
+          <div>
+            <div class="kpi-value">5</div>
+            <div class="kpi-label">Active Alerts</div>
+            <div class="kpi-change negative">
+              <i class="fas fa-arrow-up"></i>
+              <span>+2 in last hour</span>
+            </div>
+          </div>
+          <div class="kpi-icon warning">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class="kpi-card success">
+        <div class="kpi-header">
+          <div>
+            <div class="kpi-value">0</div>
+            <div class="kpi-label">Incidents Today</div>
+            <div class="kpi-change positive">
+              <i class="fas fa-check"></i>
+              <span>Safe operations</span>
+            </div>
+          </div>
+          <div class="kpi-icon success">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class="kpi-card primary">
+        <div class="kpi-header">
+          <div>
+            <div class="kpi-value">87%</div>
+            <div class="kpi-label">Production Target</div>
+            <div class="kpi-change positive">
+              <i class="fas fa-arrow-up"></i>
+              <span>+5% this week</span>
+            </div>
+          </div>
+          <div class="kpi-icon primary">
+            <i class="fas fa-chart-line"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="section">
+      <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Quick Actions</h3>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <button class="btn btn-danger" onclick="showToast('Emergency alert sent to all personnel', 'success')">
+          <i class="fas fa-siren-on"></i>
+          Emergency Alert
+        </button>
+        <button class="btn btn-primary" onclick="showToast('Incident form opened', 'info')">
+          <i class="fas fa-file-medical"></i>
+          Report Incident
+        </button>
+        <button class="btn btn-success">
+          <i class="fas fa-user-plus"></i>
+          Assign Shift
+        </button>
+      </div>
+    </div>
+    
+    <!-- Charts Row -->
+    <div class="grid-2 section">
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3>Production per Shift</h3>
+          <select class="input" style="width: auto; padding: 0.5rem;">
+            <option>Last 7 Days</option>
+            <option>Last 30 Days</option>
+            <option>Last 90 Days</option>
+          </select>
+        </div>
+        <canvas id="productionChart"></canvas>
+      </div>
+      
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3>Safety Incidents (Weekly)</h3>
+          <select class="input" style="width: auto; padding: 0.5rem;">
+            <option>This Week</option>
+            <option>Last Week</option>
+            <option>This Month</option>
+          </select>
+        </div>
+        <canvas id="incidentsChart"></canvas>
+      </div>
+    </div>
+    
+    <!-- Alert Panel -->
+    <div class="card section">
+      <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Active Alerts</h3>
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; border-left: 4px solid var(--danger-red);">
+          <i class="fas fa-fire" style="font-size: 1.5rem; color: var(--danger-red);"></i>
+          <div style="flex: 1;">
+            <div style="font-weight: 600; margin-bottom: 0.25rem;">High Temperature - Zone A</div>
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Temperature exceeded 45°C threshold</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">2 minutes ago</div>
+          </div>
+          <span class="badge badge-danger">Critical</span>
+          <button class="btn btn-primary" style="padding: 0.5rem 1rem;">View</button>
+        </div>
+        
+        <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; border-left: 4px solid var(--warning-yellow);">
+          <i class="fas fa-smog" style="font-size: 1.5rem; color: var(--warning-yellow);"></i>
+          <div style="flex: 1;">
+            <div style="font-weight: 600; margin-bottom: 0.25rem;">Gas Level Warning - Zone C</div>
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Methane levels approaching threshold</div>
+            <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">15 minutes ago</div>
+          </div>
+          <span class="badge badge-warning">Warning</span>
+          <button class="btn btn-primary" style="padding: 0.5rem 1rem;">View</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Recent Activity Table -->
+    <div class="table-container">
+      <div style="padding: 1.5rem; border-bottom: 1px solid var(--border-color);">
+        <h3 style="font-size: 1.25rem; font-weight: 600;">Recent Activity</h3>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Event</th>
+            <th>Zone</th>
+            <th>Worker</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>10:45 AM</td>
+            <td>Shift Check-in</td>
+            <td>Zone A</td>
+            <td>Mike Johnson</td>
+            <td><span class="badge badge-success">Complete</span></td>
+          </tr>
+          <tr>
+            <td>10:32 AM</td>
+            <td>Equipment Inspection</td>
+            <td>Zone B</td>
+            <td>Sarah Williams</td>
+            <td><span class="badge badge-success">Passed</span></td>
+          </tr>
+          <tr>
+            <td>10:18 AM</td>
+            <td>Safety Check</td>
+            <td>Zone C</td>
+            <td>David Brown</td>
+            <td><span class="badge badge-warning">In Progress</span></td>
+          </tr>
+          <tr>
+            <td>09:55 AM</td>
+            <td>Maintenance Request</td>
+            <td>Zone A</td>
+            <td>Emily Davis</td>
+            <td><span class="badge badge-info">Pending</span></td>
+          </tr>
+          <tr>
+            <td>09:40 AM</td>
+            <td>Worker Training</td>
+            <td>Training Room</td>
+            <td>James Wilson</td>
+            <td><span class="badge badge-success">Complete</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+  <!-- Emergency Evacuation Button -->
+  <button class="emergency-btn" onclick="toggleEmergencyModal()" title="Emergency Evacuation">
+    <i class="fas fa-exclamation-triangle"></i>
+  </button>
+  
+  <!-- Emergency Modal -->
+  <div class="emergency-modal" id="emergencyModal">
+    <div class="emergency-content">
+      <div class="emergency-icon">
+        <i class="fas fa-bell"></i>
+      </div>
+      <h2>Emergency Protocol</h2>
+      <p>Press to activate emergency evacuation protocol</p>
+      <div class="emergency-actions">
+        <button class="btn-activate" onclick="activateEmergency()">Activate Emergency</button>
+        <button class="btn-cancel" onclick="toggleEmergencyModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav">
+    <div class="mobile-nav-grid">
+      <a href="dashboard.html" class="mobile-nav-item active">
+        <i class="fas fa-th-large"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="safety.html" class="mobile-nav-item">
+        <i class="fas fa-shield-alt"></i>
+        <span>Safety</span>
+      </a>
+      <a href="incidents.html" class="mobile-nav-item">
+        <i class="fas fa-file-medical"></i>
+        <span>Report</span>
+      </a>
+      <a href="productivity.html" class="mobile-nav-item">
+        <i class="fas fa-chart-line"></i>
+        <span>Production</span>
+      </a>
+      <a href="profile.html" class="mobile-nav-item">
+        <i class="fas fa-user-circle"></i>
+        <span>Profile</span>
+      </a>
+    </div>
+  </div>
+  
+  <script src="../assets/js/app.js"></script>
+  <script>
+    // Production Chart
+    const productionCtx = document.getElementById('productionChart').getContext('2d');
+    new Chart(productionCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+          label: 'Production (tons)',
+          data: [420, 380, 450, 410, 480, 390, 440],
+          backgroundColor: 'rgba(249, 115, 22, 0.8)',
+          borderColor: 'rgba(249, 115, 22, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+    
+    // Incidents Chart
+    const incidentsCtx = document.getElementById('incidentsChart').getContext('2d');
+    new Chart(incidentsCtx, {
+      type: 'line',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+          label: 'Incidents',
+          data: [2, 1, 0, 3, 1, 0, 0],
+          borderColor: 'rgba(239, 68, 68, 1)',
+          backgroundColor: 'rgba(239, 68, 68, 0.1)',
+          tension: 0.4,
+          fill: true
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          y: { beginAtZero: true, ticks: { stepSize: 1 } }
+        }
+      }
+    });
+  </script>
+  
+  <script>
+    // Emergency Modal Functions
+    function toggleEmergencyModal() {
+      const modal = document.getElementById('emergencyModal');
+      modal.classList.toggle('active');
+    }
+    
+    function activateEmergency() {
+      // Play alert sound if available
+      if (typeof Audio !== 'undefined') {
+        // You can add an alert sound here
+      }
+      
+      // Show confirmation
+      if (confirm('⚠️ CONFIRM EMERGENCY EVACUATION\n\nThis will:\n• Alert all personnel\n• Sound evacuation alarms\n• Notify emergency services\n• Lock down hazardous zones\n\nDo you want to proceed?')) {
+        // Close modal
+        toggleEmergencyModal();
+        
+        // Activate emergency protocol
+        showToast('🚨 EMERGENCY EVACUATION ACTIVATED! All personnel alerted.', 'danger');
+        
+        // You can add more actions here:
+        // - Send notification to backend
+        // - Trigger alarm systems
+        // - Alert emergency contacts
+        // - Log the emergency event
+        
+        console.log('Emergency evacuation protocol activated at:', new Date().toISOString());
+        
+        // Optional: redirect to emergency page or show detailed instructions
+        // window.location.href = 'emergency-protocol.html';
+      }
+    }
+    
+    // Close modal when clicking outside
+    document.getElementById('emergencyModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        toggleEmergencyModal();
+      }
+    });
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('emergencyModal');
+        if (modal.classList.contains('active')) {
+          toggleEmergencyModal();
+        }
+      }
+    });
+  </script>
+  
+</body>
+</html>

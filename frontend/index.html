@@ -1,765 +1,790 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-  <!-- Font Awesome CDN -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - MineSafe Pro</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#fbbf24">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Minesync - Productivity & Safety Management for Coal Mines</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <style>
-    /* Custom colors inspired by mining industry theme */
-    :root {
-      --primary-dark: #2f3e46; /* dark slate blue/gray - mining rock */
-      --primary-main: #52796f; /* muted green, ores inspiration */
-      --primary-light: #84a98c; /* light mint green - freshness and safety */
-      --accent-orange: #ef6c35; /* industrial orange - safety & energy */
-      --background-light: #f7f9f9; /* very light gray */
-      --text-dark: #1b1b1b;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-
+    
     body {
-      background-color: var(--background-light);
-      color: var(--text-dark);
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    a {
-      color: var(--accent-orange);
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
-
-    /* Navigation bar */
-    header nav {
-      background-color: var(--primary-dark);
-    }
-
-    header nav a {
-      color: white;
-      font-weight: 600;
-      transition: color 0.3s ease;
-    }
-
-    header nav a:hover {
-      color: var(--accent-orange);
-    }
-
-    /* Hero slideshow style */
-    .hero-slide {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: relative;
-      height: 70vh;
-      max-height: 650px;
-      overflow: hidden;
+      overflow-x: hidden;
     }
-
-    .hero-slide img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: brightness(0.45);
-      transition: opacity 0.8s ease-in-out;
+    
+    body::before {
+      content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-    }
-
-    .hero-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 2.4rem;
-      font-weight: 600;
-      color: #ffffff;
-      text-align: center;
-      font-family: 'Poppins', sans-serif;
-      width: 85%;
-      line-height: 1.5;
-      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
-      z-index: 10;
-    }
-
-    @media (max-width: 768px) {
-      .hero-text {
-        font-size: 1.5rem;
-        width: 95%;
-      }
-    }
-
-    .hero-buttons {
-      position: absolute;
-      width: 100%;
-      height: 100%;
+      inset: 0;
+      background-image: 
+        url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="%231a1a1a"/><path d="M0 0 L100 100 M100 0 L0 100" stroke="%23ffffff" stroke-width="0.5" opacity="0.02"/></svg>');
+      opacity: 0.5;
       pointer-events: none;
     }
-
-    .hero-arrow {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      pointer-events: auto;
-      background: rgba(0, 0, 0, 0.35);
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      cursor: pointer;
-      color: white;
-      font-weight: 900;
-      font-size: 24px;
-      user-select: none;
-      transition: background 0.3s ease;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .hero-arrow:hover {
-      background: var(--accent-orange);
-    }
-
-    .hero-arrow.left {
-      left: 20px;
-    }
-
-    .hero-arrow.right {
-      right: 20px;
-    }
-
-    /* Section headings style */
-    h2.section-title {
-      font-size: 2.25rem;
-      font-weight: 800;
-      color: var(--primary-dark);
-      margin-bottom: 1rem;
+    
+    .login-wrapper {
+      width: 100%;
+      max-width: 1400px;
+      height: 90vh;
+      max-height: 700px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: linear-gradient(145deg, rgba(42, 42, 42, 0.85) 0%, rgba(31, 31, 31, 0.85) 100%),
+                  url('assets/icons/Indexbg.png');
+      background-size: cover;
+      background-position: center;
+      background-blend-mode: overlay;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 
+        0 30px 90px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 193, 7, 0.1);
+      margin: 20px;
       position: relative;
     }
-
-    .section-title::after {
-      display: none !important;
-      content: none !important;
-    }
-
-
-    /* Button styles */
-    button, input[type="submit"] {
-      background-color: var(--accent-orange);
-      color: white;
-      font-weight: 600;
-      padding: 0.7rem 1.5rem;
-      border-radius: 5px;
-      border: none;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover, input[type="submit"]:hover {
-      background-color: #d85c27;
-    }
-
-    /* Form labels */
-    label {
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      display: inline-block;
-      color: var(--primary-dark);
-    }
-
-    /* Input styles */
-    input[type="text"], input[type="email"], textarea {
-      border: 2px solid var(--primary-light);
-      border-radius: 5px;
-      padding: 0.5rem;
-      width: 100%;
-      font-size: 1rem;
-      font-family: inherit;
-      background-color: white;
-      color: var(--text-dark);
-      resize: vertical;
-      transition: border-color 0.3s ease;
-      margin-bottom: 1rem;
-    }
-
-    input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
-      border-color: var(--accent-orange);
-      outline: none;
-    }
-
-    /* Quote form */
-    .quote-form {
-      background-color: white;
-      padding: 2rem;
-      box-shadow: 0 0 15px rgb(0 0 0 / 0.08);
-      border-radius: 10px;
-      max-width: 380px;
-      width: 100%;
-      margin-bottom: 2rem;
-    }
-
-    /* Achievements stats style */
-    .stats-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(160px,1fr));
-      gap: 1.75rem;
-      max-width: 1000px;
-      margin-top: 1rem;
-    }
-
-    .stat-box {
-      background: white;
-      border-radius: 8px;
-      padding: 1.5rem 1rem;
-      box-shadow: 0 3px 8px rgb(0,0,0,0.1);
-      text-align: center;
-    }
-
-    .stat-box h3 {
-      font-size: 2.5rem;
-      font-weight: 900;
-      color: var(--accent-orange);
-      margin-bottom: 0.25rem;
-    }
-
-    .stat-box p {
-      font-weight: 600;
-      color: var(--primary-dark);
-    }
-
-    /* Products section background */
-    .products-section {
-      background-color: var(--primary-main);
-      color: white;
-      padding: 3rem 1rem;
-      text-align: center;
-    }
-
-    /* Testimonial section */
-    .testimonial-section {
-      background-color: var(--accent-orange);
-      color: white;
-      padding: 2.5rem 1rem;
-      font-style: italic;
-      font-size: 1.175rem;
-      max-width: 900px;
-      margin: 3rem auto;
-      border-radius: 10px;
-      box-shadow: 0 0 25px rgb(237 108 53 / 0.3);
-    }
-
-    .testimonial-section footer {
-      margin-top: 1rem;
-      font-weight: 700;
-      font-style: normal;
-      text-align: right;
-      font-size: 1rem;
-      letter-spacing: 0.05em;
-    }
-
-    /* Contact section background */
-    .contact-section {
-      background-color: var(--primary-main);
-      color: white;
-      padding: 3rem 1rem;
-    }
-
-    /* Contact form */
-    .contact-form {
-      max-width: 800px;
-      margin: 1rem auto 0 auto;
-    }
-
-    .contact-form .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
-
-    .contact-form input, .contact-form textarea {
-      background-color: white;
-      color: var(--text-dark);
-    }
-
-    .contact-info {
+    
+    /* LEFT PANEL - BRANDING */
+    .left-panel {
+      background: transparent;
+      padding: 4rem 3rem;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 3rem;
-      max-width: 900px;
-      margin: 0 auto 2rem auto;
-      font-size: 0.9rem;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
     }
-
-    .contact-info div {
-      flex: 1 1 170px;
+    
+    .branding {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
     }
-
-    .contact-info h3 {
-      font-weight: 700;
-      color: white;
+    
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
       margin-bottom: 0.5rem;
     }
-
-    /* Social icons style */
-    .social-icons a {
-      margin-right: 0.5rem;
-      color: white;
-      font-size: 1.3rem;
-      transition: color 0.3s;
-    }
-
-    .social-icons a:hover {
-      color: var(--accent-orange);
-    }
-
-    /* Footer with download brochure */
-    footer {
-      background-color: var(--primary-dark);
-      color: white;
-      padding: 2rem 1rem 2.5rem 1rem;
-      font-size: 0.875rem;
-    }
-
-    footer .footer-container {
-      max-width: 1200px;
-      margin: 0 auto;
+    
+    .logo-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+      border-radius: 12px;
       display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #000;
+      box-shadow: 
+        0 8px 20px rgba(255, 193, 7, 0.3),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .logo-text h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.25rem;
+    }
+    
+    .tagline {
+      color: #999;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+    
+    .tagline span {
+      color: #ffc107;
+    }
+    
+    .features-list {
+      list-style: none;
+      margin-top: auto;
+      padding-top: 2rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
       gap: 1.5rem;
     }
-
-    footer .footer-section {
-      flex: 1 1 210px;
-    }
-
-    /* Footer headings */
-    footer h4 {
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-
-    /* Footer links */
-    footer ul {
-      list-style: none;
+    
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
       padding: 0;
-      margin: 0;
+      transition: all 0.3s;
     }
-
-    footer ul li {
-      margin-bottom: 0.55rem;
+    
+    .feature-item:hover {
+      transform: translateX(4px);
     }
-
-    footer ul li a {
-      color: white;
-      text-decoration: none;
+    
+    .feature-item:hover .feature-icon {
+      background: rgba(255, 193, 7, 0.2);
+      transform: scale(1.1);
     }
-
-    footer ul li a:hover {
-      text-decoration: underline;
+    
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 193, 7, 0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffc107;
+      font-size: 1.25rem;
+      flex-shrink: 0;
     }
-
-    /* Download brochure form */
-    .brochure-download {
+    
+    .feature-text {
+      color: #e5e5e5;
+      font-size: 0.9375rem;
+      font-weight: 500;
+    }
+    
+    .footer-text {
       text-align: center;
-      background-color: black;
-      padding: 1.5rem 0 1.5rem 0;
+      color: #666;
+      font-size: 0.75rem;
+      margin-top: auto;
+      padding-top: 2rem;
+    }
+    
+    /* RIGHT PANEL - LOGIN FORM */
+    .right-panel {
+      background: transparent;
+      padding: 4rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    
+    .login-card {
+      width: 100%;
+      max-width: 450px;
+      background: rgba(35, 35, 35, 0.95);
+      border-radius: 20px;
+      padding: 2.5rem;
+      border: 1px solid rgba(80, 80, 80, 0.4);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .login-header h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+    
+    .login-header p {
+      color: #999;
+      font-size: 0.875rem;
+    }
+    
+    .form-group {
       margin-bottom: 1.5rem;
     }
-
-    .brochure-download form {
-      max-width: 380px;
-      margin: 0 auto;
+    
+    .input-wrapper {
+      position: relative;
+    }
+    
+    .input-wrapper i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      font-size: 1rem;
+      z-index: 1;
+      transition: color 0.3s;
+    }
+    
+    .input-wrapper:has(.form-input:focus) i {
+      color: #ffc107;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 0.875rem 3.5rem 0.875rem 3rem;
+      background: rgba(25, 25, 25, 0.8);
+      border: 1.5px solid rgba(80, 80, 80, 0.5);
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    
+    .form-input::placeholder {
+      color: #666;
+      font-weight: 400;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #ffc107;
+      background: rgba(30, 30, 30, 0.9);
+      box-shadow: 0 0 0 1px rgba(255, 193, 7, 0.3);
+    }
+    
+    .password-toggle {
+      position: absolute;
+      right: 2.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      padding: 0.5rem;
+      z-index: 2;
+      transition: color 0.3s ease;
+    }
+    
+    .password-toggle:hover {
+      color: #ffc107;
+    }
+    
+    .password-toggle i {
+      font-size: 1rem;
+      display: block;
+    }
+    
+    .role-selector {
       display: flex;
       gap: 0.5rem;
-      justify-content: center;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 0.5rem 0.25rem;
+      margin: 0 -0.25rem 1.5rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      cursor: grab;
     }
-
-    .brochure-download input[type="email"] {
-      border-radius: 4px;
-      padding: 0.5rem 0.75rem;
-      border: 1px solid gray;
-      width: 70%;
+    
+    .role-selector:active {
+      cursor: grabbing;
+    }
+    
+    .role-selector::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .role-selector::before,
+    .role-selector::after {
+      content: '';
+      flex-shrink: 0;
+      width: 0.25rem;
+    }
+    
+    .role-pill {
+      padding: 0.625rem 1.25rem;
+      background: rgba(40, 40, 40, 0.8);
+      border: 1.5px solid rgba(80, 80, 80, 0.5);
+      border-radius: 24px;
+      color: #bbb;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.10s;
+      white-space: nowrap;
+      flex-shrink: 0;
+      user-select: none;
+      scroll-snap-align: center;
+    }
+    
+    .role-pill:hover {
+      border-color: rgba(255, 193, 7, 0.6);
+      background: rgba(50, 50, 50, 0.9);
+      transform: translateY(-1px);
+    }
+    
+    .role-pill.active {
+      background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+      border-color: transparent;
+      color: #000;
+      box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+      font-weight: 700;
+    }
+    
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+    }
+    
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      color: #bbb;
+      font-weight: 500;
+    }
+    
+    .remember-me input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #ffc107;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    
+    .forgot-link {
+      color: #ffc107;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    
+    .forgot-link:hover {
+      color: #ffd54f;
+    }
+    
+    .btn-primary {
+      width: 100%;
+      padding: 0.875rem;
+      background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+      border: none;
+      border-radius: 12px;
+      color: #000;
       font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 16px rgba(255, 193, 7, 0.35);
+      margin-bottom: 0.875rem;
     }
-
-    .brochure-download button {
-      width: 30%;
-      font-size: 1rem;
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #ffd54f 0%, #ffb74d 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(255, 193, 7, 0.45);
     }
-
-    /* Responsive tweaks */
-    @media (max-width: 768px) {
-      .contact-form .grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .contact-form .grid > :nth-child(3) {
-        grid-column: span 2;
-      }
-
-      footer .footer-container {
-        flex-direction: column;
-        gap: 2rem;
-      }
+    
+    .btn-primary:active {
+      transform: translateY(0);
     }
-
-    @media (max-width: 480px) {
-      header nav ul {
-        flex-direction: column;
-        gap: 0.8rem;
-      }
-
-      .hero-text {
-        font-size: 1.3rem;
-        max-width: 95%;
-      }
-
-      .contact-form .grid {
+    
+    .btn-secondary {
+      width: 100%;
+      padding: 0.875rem;
+      background: rgba(30, 30, 30, 0.6);
+      border: 1.5px solid rgba(80, 80, 80, 0.6);
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 1rem;
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(40, 40, 40, 0.8);
+      border-color: rgba(255, 193, 7, 0.5);
+    }
+    
+    .btn-secondary:active {
+      transform: translateY(0);
+    }
+    
+    .login-footer {
+      text-align: center;
+      font-size: 0.875rem;
+      color: #888;
+    }
+    
+    .login-footer a {
+      color: #ffc107;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    
+    .login-footer a:hover {
+      color: #ffd54f;
+      text-decoration: underline;
+    }
+    
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .login-wrapper {
         grid-template-columns: 1fr;
+        height: auto;
+        max-height: none;
       }
-
-      .contact-form .grid > :nth-child(3) {
-        grid-column: span 1;
+      
+      .left-panel {
+        display: none;
+      }
+      
+      .right-panel {
+        min-height: 100vh;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .login-wrapper {
+        margin: 0;
+        border-radius: 0;
+        min-height: 100vh;
+      }
+      
+      .right-panel {
+        padding: 2rem 1.5rem;
+      }
+      
+      .login-card {
+        padding: 2rem 1.5rem;
+      }
+      
+      .login-header h2 {
+        font-size: 1.5rem;
+      }
+      
+      .role-selector {
+        margin: 0 -1.5rem 1.5rem;
+        padding: 0.5rem 1.5rem;
+      }
+      
+      .role-pill {
+        font-size: 0.75rem;
+        padding: 0.5rem 1rem;
+      }
+    }
+    
+    /* FOOTER */
+    .page-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: transparent;
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #666;
+      z-index: 1000;
+      pointer-events: auto;
+    }
+    
+    .page-footer a {
+      pointer-events: auto;
+      cursor: pointer;
+    }
+    
+    .page-footer span {
+      opacity: 0.6;
+      transition: opacity 0.3s;
+    }
+    
+    .page-footer a:hover span {
+      opacity: 1;
+    }
+    
+    @media (max-width: 768px) {
+      .page-footer {
+        font-size: 0.6875rem;
       }
     }
   </style>
 </head>
-
 <body>
-
-  <!-- Navigation -->
-  <header class="sticky top-0 z-50 bg-[#2E3B3E]"> <!-- Optional: Set consistent background color -->
-    <nav class="flex justify-between items-center px-6 md:px-12 py-4 shadow-md" role="navigation" aria-label="Main navigation">
-      
-      <!-- Logo -->
-      <a href="#"
-        class="text-3xl font-extrabold tracking-widest select-none group flex items-center space-x-1 no-underline hover:no-underline"
-        aria-label="Minesync home">
-        <span class="text-white transition-colors duration-300 group-hover:text-[#FFC107]">MINE</span>
-        <span class="text-white transition-colors duration-300">SYNC</span>
-      </a>
-
-      <!-- Navigation Links -->
-      <ul class="flex space-x-8 font-semibold text-white uppercase tracking-widest text-sm">
-        <li>
-          <a href="#about" class="hover:text-[#FFC107] hover:no-underline transition-colors duration-300" tabindex="0">About Us</a>
-        </li>
-        <li>
-          <a href="#products" class="hover:text-[#FFC107] hover:no-underline transition-colors duration-300" tabindex="0">Products</a>
-        </li>
-        <li>
-          <a href="#contact" class="hover:text-[#FFC107] hover:no-underline transition-colors duration-300" tabindex="0">Contact Us</a>
-        </li>
-        <li>
-          <a href="#quote" class="hover:text-[#FFC107] hover:no-underline transition-colors duration-300">Get A Quote</a>
-        </li>
-      </ul>
-    </nav>
-  </header>
-
-
-  <!-- Hero Slideshow -->
-  <section aria-label="Mining facilities showcase" class="hero-slide relative overflow-hidden" id="hero">
-    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/fbd07c77-3741-4faf-9d78-d4829bfe2611.png" alt="Aerial view of an open coal mine with large machinery at dusk surrounded by hills" class="hero-image active" />
-    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/111cbea2-7f08-486a-93fd-0b5f9940593e.png" alt="Close-up of a coal mine worker wearing safety helmet and inspecting mining equipment" class="hero-image" style="opacity:0;" />
-    <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/18fa2dab-99d6-4278-8258-510c502ac9e2.png" alt="Interior wide shot of a coal mine productivity control room with multiple screens and operators" class="hero-image" style="opacity:0;" />
-    <div class="hero-text" aria-live="polite" aria-atomic="true" aria-relevant="text">
-      Mining, Crushing, Screening & Coal Mine Productivity & Safety Management
-    </div>
-    <div class="hero-buttons">
-      <button class="hero-arrow left" aria-label="Previous slide" id="prev-slide">❮</button>
-      <button class="hero-arrow right" aria-label="Next slide" id="next-slide">❯</button>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="px-6 md:px-12 py-16 max-w-7xl mx-auto text-center">
-    <h2 class="text-4xl font-bold text-gray-800 mb-4 relative inline-block">
-      ABOUT US
-    </h2>
-
-    <p class="max-w-4xl mx-auto text-lg text-gray-700 leading-relaxed mb-6">
-      Minesync is a dedicated team of experts with over 30 years of experience in coal mining operations and safety management.
-      Our focus is on delivering cutting-edge solutions for productivity and safety in coal mines by integrating advanced technology with industry best practices.
-    </p>
-
-    <p class="max-w-4xl mx-auto text-lg text-gray-700 leading-relaxed mb-10">
-      Founded on commitment and trust, Minesync specializes in providing comprehensive solutions for coal mine productivity,
-      safety management systems, monitoring equipment, and operational controls. We partner with leading industry experts to
-      ensure our clients operate safely and efficiently.
-    </p>
-
-    <div class="flex justify-center">
-      <button
-        class="bg-orange-600 hover:bg-orange-700 text-white font-medium px-6 py-3 rounded-lg transition duration-300"
-        aria-label="Learn more about Minesync"
-        onclick="window.location='#about'">
-        Know More
-      </button>
-    </div>
-  </section>
-
-
-    <!-- Embedded Video -->
-    <style>
-  .video-container {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    height: 0;
-    overflow: hidden;
-    max-width: 100%;
-    background: #000;
-    margin: 0 auto;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
-  }
-
-  .video-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: 0;
-  }
-</style>
-
-<div class="video-container">
-  <iframe 
-    src="https://www.youtube.com/embed/EDExs8bmXTs" 
-    title="Hitachi Excavator Working On Mines"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen>
-  </iframe>
-</div>
-  </section>
-
-  <!-- Quote & Achievements Section -->
-  <section id="quote" class="px-6 md:px-12 py-12 max-w-7xl mx-auto flex flex-col md:flex-row gap-10 items-start">
-    <!-- Quote Form -->
-    <aside class="quote-form" aria-labelledby="quote-form-title" role="form">
-      <h3 id="quote-form-title" class="text-xl font-bold mb-4 text-center text-primary-dark">Get a Quote</h3>
-      <form>
-        <label for="quote-name">Your Name</label>
-        <input type="text" id="quote-name" name="quote-name" required aria-required="true" />
-        <label for="quote-email">Your Email</label>
-        <input type="email" id="quote-email" name="quote-email" required aria-required="true" />
-        <label for="quote-phone">Telephone</label>
-        <input type="text" id="quote-phone" name="quote-phone" />
-        <label for="quote-message">Enter Message</label>
-        <textarea id="quote-message" name="quote-message" rows="4"></textarea>
-        <input type="submit" value="Submit Request" aria-label="Submit quote request" />
-      </form>
-    </aside>
-
-    <!-- Achievements -->
-    <section aria-labelledby="achievements-title" class="flex-grow">
-      <h2 id="achievements-title" class="section-title mb-6">OUR ACHIEVEMENTS</h2>
-      <p class="max-w-xl mb-8 leading-relaxed">
-        We strive to set new standards for mining, processing, and safety management through our products and services.
-      </p>
-      <div class="stats-container" role="list" aria-label="Company achievements">
-        <div class="stat-box" role="listitem" tabindex="0">
-          <h3>1,200+</h3>
-          <p>Customers Served</p>
+  
+  <div class="login-wrapper">
+    <!-- LEFT PANEL - BRANDING & FEATURES -->
+    <div class="left-panel">
+      <div class="branding">
+        <div class="logo-section">
+          <div class="logo-icon">
+            <i class="fas fa-hard-hat"></i>
+          </div>
+          <div class="logo-text">
+            <h1>MineSafe Pro</h1>
+          </div>
         </div>
-        <div class="stat-box" role="listitem" tabindex="0">
-          <h3>3,500+</h3>
-          <p>Installations Done</p>
-        </div>
-        <div class="stat-box" role="listitem" tabindex="0">
-          <h3>30+</h3>
-          <p>Years in Industry</p>
-        </div>
-      </div>
-    </section>
-  </section>
-
-  <!-- Products Section -->
-  <section id="products" class="products-section">
-    <h2 class="section-title text-white" tabindex="0">OUR PRODUCTS</h2>
-    <p class="max-w-4xl mx-auto mb-12 leading-relaxed">
-      We provide a comprehensive range of reliable and efficient mining equipment specially designed to enhance productivity and safety in coal mines.
-    </p>
-  </section>
-
-  <!-- Testimonial Section -->
-  <section class="testimonial-section max-w-5xl mx-auto px-6 md:px-12">
-    <blockquote>
-      "Minesync has been an invaluable partner in coal mining operations, providing reliable and efficient equipment with sturdy construction and advanced safety features. Their dedicated team ensures customer satisfaction, and I highly recommend Minesync for any mining professional seeking dependable solutions."
-    </blockquote>
-  </section>
-
-  <!-- Contact Section -->
-  <section id="contact" class="contact-section" aria-labelledby="contact-title">
-    <h2 id="contact-title" class="section-title text-white text-center mb-10">CONTACT US</h2>
-
-    <div class="contact-info" role="contentinfo">
-      <div>
-        <h3>Address</h3>
-        <address>
-          Minesync HQ, 21/20 DL Phase-1,<br />
-          Industrial Ground, Sarjapur Rd,<br />
-          Bengaluru, Karnataka 560034
-        </address>
-      </div>
-      <div>
-        <h3>Phone</h3>
-        <p>+91 9345 271 517</p>
-      </div>
-      <div>
-        <h3>Email</h3>
-        <p><a href="mailto:enquiry@minesyncsolutions.com">enquiry@minesyncsolutions.com</a></p>
-      </div>
-      <div>
-        <h3>Social</h3>
-        <div class="social-icons" role="list" aria-label="Social media links">
-          <a href="#" aria-label="Follow Minesync on Facebook" role="listitem" tabindex="0" target="_blank" rel="noopener noreferrer">F</a>
-          <a href="#" aria-label="Follow Minesync on Twitter" role="listitem" tabindex="0" target="_blank" rel="noopener noreferrer">T</a>
-          <a href="#" aria-label="Follow Minesync on LinkedIn" role="listitem" tabindex="0" target="_blank" rel="noopener noreferrer">In</a>
-          <a href="#" aria-label="Follow Minesync on Instagram" role="listitem" tabindex="0" target="_blank" rel="noopener noreferrer">Ig</a>
-        </div>
-      </div>
-    </div>
-
-    <form class="contact-form max-w-3xl mx-auto mt-4" aria-label="Contact form">
-      <div class="grid">
-        <div>
-          <label for="first-name">First Name</label>
-          <input type="text" id="first-name" name="first-name" required aria-required="true" />
-        </div>
-        <div>
-          <label for="last-name">Last Name</label>
-          <input type="text" id="last-name" name="last-name" required aria-required="true" />
-        </div>
-        <div>
-          <label for="email-address">Email Address</label>
-          <input type="email" id="email-address" name="email-address" required aria-required="true" />
-        </div>
-        <div>
-          <label for="subject">Subject</label>
-          <input type="text" id="subject" name="subject" />
-        </div>
-        <div class="col-span-full">
-          <label for="message">Your Message</label>
-          <textarea id="message" name="message" rows="5"></textarea>
-        </div>
-      </div>
-      <input type="submit" value="Submit Message" aria-label="Submit contact message" />
-    </form>
-  </section>
-
-  <!-- Map Section -->
-  <section class="max-w-7xl mx-auto px-6 md:px-12 py-12">
-    <iframe title="Minesync Location Map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.9590910383646!2d77.6783080152435!3d12.839161219400805!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae17269d8d4cdb%3A0x75c3d9fffa3f2a4e!2sSarjapur%20Road%2C%20Bangalore%2C%20Karnataka%20560034!5e0!3m2!1sen!2sin!4v1697651297886!5m2!1sen!2sin"
-      width="100%" height="400" style="border:0; border-radius:8px;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-  </section>
-
-
-
-  <!-- Footer -->
-  <footer role="contentinfo" aria-label="Footer with company details and product links" class="bg-gray-800 text-white py-10">
-    <div class="footer-container max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-10">
-
-      <!-- Contact Info -->
-      <div class="footer-section">
-        <h4 class="text-lg font-bold mb-2">MINESYNC</h4>
-        <ul class="space-y-1 text-sm">
-          <li>Phone: +91 9345 271 517</li>
-          <li>Email: <a href="mailto:enquiry@minesyncsolutions.com" class="hover:underline">enquiry@minesyncsolutions.com</a></li>
-          <li>Address: 21/20 DL Phase-1, Sarjapur Rd, Bengaluru, Karnataka 560034</li>
-        </ul>
-        <div class="social-icons mt-4 flex space-x-4 text-xl" role="list" aria-label="Footer social media links">
-          <a href="#" aria-label="Facebook" role="listitem" tabindex="0" class="hover:text-blue-500"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" aria-label="Twitter" role="listitem" tabindex="0" class="hover:text-sky-400"><i class="fab fa-twitter"></i></a>
-          <a href="#" aria-label="LinkedIn" role="listitem" tabindex="0" class="hover:text-blue-700"><i class="fab fa-linkedin-in"></i></a>
-          <a href="#" aria-label="Instagram" role="listitem" tabindex="0" class="hover:text-pink-500"><i class="fab fa-instagram"></i></a>
-        </div>
-      </div>
-
-      <!-- Our Company -->
-      <div class="footer-section">
-        <h4 class="text-lg font-bold mb-2">Our Company</h4>
-        <ul class="space-y-1 text-sm">
-          <li><a href="#about" class="hover:underline">About Us</a></li>
-          <li><a href="#careers" class="hover:underline">Careers</a></li>
-          <li><a href="#contact" class="hover:underline">Contact Us</a></li>
+        <p class="tagline">Safety <span>•</span> Productivity <span>•</span> Compliance</p>
+        
+        <ul class="features-list">
+          <li class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="feature-text">Real-time Hazard Alerts</div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-clipboard-list"></i>
+            </div>
+            <div class="feature-text">Incident Reporting & Tracking</div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="feature-text">Shift Productivity Analytics</div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-cogs"></i>
+            </div>
+            <div class="feature-text">Equipment Monitoring</div>
+          </li>
         </ul>
       </div>
-
-      <!-- Products -->
-      <div class="footer-section">
-        <h4 class="text-lg font-bold mb-2">Products</h4>
-        <ul class="space-y-1 text-sm">
-          <li><a href="#" class="hover:underline">Jaw Crusher</a></li>
-          <li><a href="#" class="hover:underline">Cone Crusher</a></li>
-          <li><a href="#" class="hover:underline">VSI Crusher</a></li>
-          <li><a href="#" class="hover:underline">Vibrating Screen</a></li>
-          <li><a href="#" class="hover:underline">Hydro Cyclone</a></li>
-          <li><a href="#" class="hover:underline">Eddy Feeder</a></li>
-        </ul>
+    </div>
+    
+    <!-- RIGHT PANEL - LOGIN FORM -->
+    <div class="right-panel">
+      <div class="login-card">
+        <div class="login-header">
+          <h2>Welcome Back</h2>
+          <p>Login to manage mine safety and productivity.</p>
+        </div>
+        
+        <form id="loginForm">
+          <div class="form-group">
+            <div class="input-wrapper">
+              <i class="fas fa-envelope"></i>
+              <input type="text" class="form-input" id="email" placeholder="Email / Phone" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="input-wrapper">
+              <i class="fas fa-lock"></i>
+              <input type="password" class="form-input" id="password" placeholder="Password" required>
+              <button type="button" class="password-toggle" onclick="togglePassword()">
+                <i class="fas fa-eye" id="toggleIcon"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="role-selector">
+            <div class="role-pill" data-role="admin">Admin</div>
+            <div class="role-pill" data-role="supervisor">Supervisor</div>
+            <div class="role-pill active" data-role="worker">Worker</div>
+          </div>
+          
+          <div class="remember-forgot">
+            <label class="remember-me">
+              <input type="checkbox" id="remember">
+              <span>Remember me</span>
+            </label>
+            <a href="#" class="forgot-link">Forgot Password?</a>
+          </div>
+          
+          <button type="submit" class="btn-primary">Login</button>
+          <button type="button" class="btn-secondary" onclick="loginWithOTP()">Login with OTP</button>
+          
+          <div class="login-footer">
+            <a href="#">Request access</a> / <a href="#">Create account</a>
+          </div>
+        </form>
       </div>
-
-
-      <!-- Privacy and Legal Links -->
-    <div class="footer-section">   
-      <h4 class="text-lg font-bold mb-2">Legal</h4>
-        <ul class="list-unstyled text-light small">
-          <li><a href="#" class="text-decoration-none text-light">Privacy Policy</a></li>
-          <li><a href="#" class="text-decoration-none text-light">Terms of Use</a></li>
-          <li><a href="#" class="text-decoration-none text-light">Cookie Policy</a></li>
-        </ul>
-    </div>  
-
-    <p class="text-center mt-8 text-sm opacity-60 select-none">© 2023 Minesync Solutions. All Rights Reserved.</p>
-  </footer>
-
-
+    </div>
+  </div>
+  
   <script>
-    // Hero slideshow logic
-    const slides = document.querySelectorAll(".hero-image");
-    const heroText = document.querySelector(".hero-text");
-    let currentSlide = 0;
-
-    const heroDescriptions = [
-      "Mining, Crushing, Screening & Coal Mine Productivity & Safety Management",
-      "Coal mine workers equipped with advanced safety gear ensuring secure operations",
-      "Control rooms monitoring coal mining productivity and safety real-time"
-    ];
-
-    function showSlide(index) {
-      if (index < 0) index = slides.length - 1;
-      if (index >= slides.length) index = 0;
-      slides.forEach((img, i) => {
-        img.style.opacity = (i === index) ? "1" : "0";
+    // Role selector with slide/drag functionality
+    const roleSelector = document.querySelector('.role-selector');
+    const rolePills = document.querySelectorAll('.role-pill');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    
+    // Mouse drag events
+    roleSelector.addEventListener('mousedown', (e) => {
+      isDown = true;
+      roleSelector.style.cursor = 'grabbing';
+      startX = e.pageX - roleSelector.offsetLeft;
+      scrollLeft = roleSelector.scrollLeft;
+    });
+    
+    roleSelector.addEventListener('mouseleave', () => {
+      isDown = false;
+      roleSelector.style.cursor = 'grab';
+    });
+    
+    roleSelector.addEventListener('mouseup', () => {
+      isDown = false;
+      roleSelector.style.cursor = 'grab';
+      snapToNearestPill();
+    });
+    
+    roleSelector.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - roleSelector.offsetLeft;
+      const walk = (x - startX) * 2;
+      roleSelector.scrollLeft = scrollLeft - walk;
+    });
+    
+    // Touch drag events
+    roleSelector.addEventListener('touchend', () => {
+      setTimeout(snapToNearestPill, 100);
+    });
+    
+    // Snap to nearest pill and activate it
+    function snapToNearestPill() {
+      const containerRect = roleSelector.getBoundingClientRect();
+      const containerCenter = containerRect.left + containerRect.width / 2;
+      
+      let closestPill = null;
+      let closestDistance = Infinity;
+      
+      rolePills.forEach(pill => {
+        const pillRect = pill.getBoundingClientRect();
+        const pillCenter = pillRect.left + pillRect.width / 2;
+        const distance = Math.abs(containerCenter - pillCenter);
+        
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestPill = pill;
+        }
       });
-      heroText.textContent = heroDescriptions[index];
-      currentSlide = index;
+      
+      if (closestPill) {
+        // Scroll to center the pill
+        const pillRect = closestPill.getBoundingClientRect();
+        const containerRect = roleSelector.getBoundingClientRect();
+        const scrollAmount = pillRect.left - containerRect.left - (containerRect.width / 2) + (pillRect.width / 2);
+        
+        roleSelector.scrollBy({
+          left: scrollAmount,
+          behavior: 'smooth'
+        });
+        
+        // Activate the pill
+        rolePills.forEach(p => p.classList.remove('active'));
+        closestPill.classList.add('active');
+      }
     }
-
-    document.getElementById("prev-slide").addEventListener("click", () => {
-      showSlide(currentSlide - 1);
+    
+    // Click to select and scroll to center
+    rolePills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        e.preventDefault();
+        rolePills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        
+        // Scroll to center the clicked pill
+        const pillRect = pill.getBoundingClientRect();
+        const containerRect = roleSelector.getBoundingClientRect();
+        const scrollAmount = pillRect.left - containerRect.left - (containerRect.width / 2) + (pillRect.width / 2);
+        
+        roleSelector.scrollBy({
+          left: scrollAmount,
+          behavior: 'smooth'
+        });
+      });
     });
-
-    document.getElementById("next-slide").addEventListener("click", () => {
-      showSlide(currentSlide + 1);
+    
+    // Initialize: center the active pill on load
+    window.addEventListener('load', () => {
+      const activePill = document.querySelector('.role-pill.active');
+      if (activePill) {
+        const pillRect = activePill.getBoundingClientRect();
+        const containerRect = roleSelector.getBoundingClientRect();
+        const scrollAmount = pillRect.left - containerRect.left - (containerRect.width / 2) + (pillRect.width / 2);
+        
+        roleSelector.scrollBy({
+          left: scrollAmount,
+          behavior: 'auto'
+        });
+      }
     });
-
-    // Auto slide every 8 seconds
-    setInterval(() => {
-      showSlide(currentSlide + 1);
-    }, 8000);
-
-    showSlide(currentSlide);
+    
+    // Password toggle
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const toggleIcon = document.getElementById('toggleIcon');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+      }
+    }
+    
+    // Login with OTP
+    function loginWithOTP() {
+      alert('OTP login functionality would be implemented here');
+    }
+    
+    // Login form submission
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const selectedRole = document.querySelector('.role-pill.active').dataset.role;
+      
+      // Store user data
+      localStorage.setItem('minesafe_user', JSON.stringify({
+        name: 'John Doe',
+        role: selectedRole,
+        email: email
+      }));
+      
+      // Redirect to dashboard
+      window.location.href = 'pages/dashboard.html';
+    });
+    
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
   </script>
+  
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <a href="pages/timeline.html" style="color:inherit;text-decoration:none;transition:color 0.3s" onmouseover="this.style.color='#ffc107'" onmouseout="this.style.color='inherit'">
+      <span>© MineSafe Pro | Powered by Smart Monitoring</span>
+    </a>
+  </footer>
+  
 </body>
-
 </html>
-
