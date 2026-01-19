@@ -1,0 +1,514 @@
+<!-- Safety Monitoring Page with Zone Cards and Sensor Status -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safety Monitoring - MineSafe Pro</title>
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#fbbf24">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    body { display: grid; grid-template-columns: 1fr; grid-template-rows: auto 1fr auto; min-height: 100vh; }
+    .sidebar { grid-row: 1 / -1; background: var(--bg-secondary); border-right: 1px solid var(--border-color); padding: 1rem 0.5rem; display: flex; flex-direction: column; position: fixed; width: 70px; height: 100vh; overflow-y: auto; overflow-x: hidden; transition: width 0.3s ease, padding 0.3s ease; z-index: 1000; }
+    .sidebar:hover { width: 260px; padding: 1.5rem; }
+    .sidebar-header { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border-color); overflow: hidden; transition: flex-direction 0.3s ease, gap 0.3s ease; }
+    .sidebar:hover .sidebar-header { flex-direction: row; gap: 0.75rem; justify-content: flex-start; }
+    .sidebar-header h3, .sidebar-header p { white-space: nowrap; opacity: 0; width: 0; height: 0; overflow: hidden; transition: opacity 0.3s ease, width 0.3s ease, height 0.3s ease; }
+    .sidebar:hover .sidebar-header h3, .sidebar:hover .sidebar-header p { opacity: 1; width: auto; height: auto; }
+    .sidebar-logo { width: 40px; height: 40px; background: linear-gradient(135deg, var(--accent-orange), var(--warning-yellow)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0; transition: width 0.3s ease, height 0.3s ease, font-size 0.3s ease; }
+    .sidebar:hover .sidebar-logo { width: 48px; height: 48px; font-size: 1.5rem; }
+    .nav-item { display: flex; align-items: center; justify-content: center; gap: 0; padding: 0.875rem 0.5rem; border-radius: 8px; color: var(--text-secondary); text-decoration: none; margin-bottom: 0.25rem; transition: all 0.2s; white-space: nowrap; overflow: hidden; }
+    .sidebar:hover .nav-item { justify-content: flex-start; gap: 0.75rem; padding: 0.875rem 1rem; }
+    .nav-item i { width: 20px; text-align: center; flex-shrink: 0; font-size: 1.1rem; }
+    .nav-item span { opacity: 0; width: 0; overflow: hidden; transition: opacity 0.3s ease, width 0.3s ease; }
+    .sidebar:hover .nav-item span { opacity: 1; width: auto; }
+    .nav-item:hover { background: var(--bg-hover); color: var(--text-primary); }
+    .nav-item.active { background: rgba(249, 115, 22, 0.1); color: var(--accent-orange); font-weight: 600; }
+    .nav-item i { width: 20px; text-align: center; }
+    .topbar { background: var(--bg-card); border-bottom: 1px solid var(--border-color); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; margin-left: 70px; transition: margin-left 0.3s ease; }
+    .search-bar { flex: 1; max-width: 400px; position: relative; }
+    .search-bar input { width: 100%; padding: 0.625rem 1rem 0.625rem 2.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; color: var(--text-primary); }
+    .search-bar i { position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+    .topbar-actions { display: flex; align-items: center; gap: 1rem; }
+    .icon-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; position: relative; }
+    .icon-btn:hover { background: var(--bg-hover); }
+    .notification-badge { position: absolute; top: -4px; right: -4px; width: 18px; height: 18px; background: var(--danger-red); border-radius: 50%; font-size: 0.625rem; display: flex; align-items: center; justify-content: center; border: 2px solid var(--bg-card); }
+    .user-menu { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; }
+    .user-avatar { width: 36px; height: 36px; background: linear-gradient(135deg, var(--accent-orange), var(--warning-yellow)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+    .main-content { padding: 2rem; margin-left: 70px; overflow-y: auto; transition: margin-left 0.3s ease; }
+    .page-header { margin-bottom: 2rem; }
+    .page-header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    
+    /* Mobile Nav */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--bg-card);
+      border-top: 1px solid var(--border-color);
+      padding: 0.5rem;
+      z-index: 998;
+    }
+    
+    .mobile-nav-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.5rem;
+    }
+    
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.75rem;
+    }
+    
+    .mobile-nav-item.active {
+      color: var(--accent-orange);
+      background: rgba(249, 115, 22, 0.1);
+    }
+    
+    /* Zone Cards */
+    .zone-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border: 2px solid var(--border-color);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .zone-card.safe { border-color: var(--safety-green); }
+    .zone-card.warning { border-color: var(--warning-yellow); }
+    .zone-card.danger { border-color: var(--danger-red); }
+    
+    .zone-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    .zone-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    
+    .zone-status {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    
+    .zone-status.safe { background: rgba(16, 185, 129, 0.2); color: var(--safety-green); }
+    .zone-status.warning { background: rgba(251, 191, 36, 0.2); color: var(--warning-yellow); }
+    .zone-status.danger { background: rgba(239, 68, 68, 0.2); color: var(--danger-red); }
+    
+    .sensor-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    
+    .sensor-item {
+      background: var(--bg-secondary);
+      padding: 1rem;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .sensor-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    
+    .sensor-icon.safe { background: rgba(16, 185, 129, 0.15); color: var(--safety-green); }
+    .sensor-icon.warning { background: rgba(251, 191, 36, 0.15); color: var(--warning-yellow); }
+    .sensor-icon.danger { background: rgba(239, 68, 68, 0.15); color: var(--danger-red); }
+    
+    .sensor-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+    
+    .sensor-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+    }
+    
+    .emergency-panel {
+      background: linear-gradient(135deg, var(--danger-red), #b91c1c);
+      padding: 2rem;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .emergency-btn {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: white;
+      color: var(--danger-red);
+      border: none;
+      font-size: 2.5rem;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      transition: all 0.2s;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .emergency-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+    
+    .emergency-btn:active {
+      transform: scale(0.95);
+    }
+    
+    @media (max-width: 1024px) {
+      body { grid-template-columns: 1fr; }
+      .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+      .sidebar.open { transform: translateX(0); }
+      .topbar, .main-content { margin-left: 0; }
+      .mobile-nav { display: block; }
+      .main-content { padding-bottom: 5rem; }
+    }
+    
+    @media (max-width: 640px) {
+      .sensor-grid { grid-template-columns: 1fr; }
+      .main-content { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Sidebar (same as dashboard) -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo"><i class="fas fa-hard-hat"></i></div>
+      <div>
+        <h3 style="font-weight: 700; font-size: 1.125rem;">MineSafe Pro</h3>
+        <p style="font-size: 0.75rem; color: var(--text-muted);">Safety First</p>
+      </div>
+    </div>
+    <nav style="flex: 1;">
+      <a href="dashboard.html" class="nav-item"><i class="fas fa-th-large"></i><span>Dashboard</span></a>
+      <a href="safety.html" class="nav-item active"><i class="fas fa-shield-alt"></i><span>Safety Monitoring</span></a>
+      <a href="incidents.html" class="nav-item"><i class="fas fa-exclamation-circle"></i><span>Incidents</span></a>
+      <a href="productivity.html" class="nav-item"><i class="fas fa-chart-line"></i><span>Productivity</span></a>
+      <a href="equipment.html" class="nav-item"><i class="fas fa-cogs"></i><span>Equipment</span></a>
+      <a href="reports.html" class="nav-item"><i class="fas fa-file-alt"></i><span>Reports</span></a>
+      <a href="profile.html" class="nav-item"><i class="fas fa-user-circle"></i><span>Profile</span></a>
+    </nav>
+    <div style="padding-top: 1rem; border-top: 1px solid var(--border-color);">
+      <a href="#" onclick="logout()" class="nav-item"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a>
+    </div>
+  </div>
+  
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="search-bar"><i class="fas fa-search"></i><input type="text" placeholder="Search zones, sensors..."></div>
+    <div class="topbar-actions">
+      <div style="display:flex;align-items:center;gap:0.5rem">
+        <div class="user-avatar">JD</div>
+        <span style="font-size:.875rem;font-weight:600;color:var(--text-primary)">John Doe</span>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="page-header">
+      <h1><i class="fas fa-shield-alt"></i> Safety Monitoring</h1>
+      <p>Real-time environmental and safety sensor monitoring across all mine zones</p>
+    </div>
+    
+    <!-- Emergency Panel -->
+    <div class="emergency-panel">
+      <h2 style="color: white; margin-bottom: 1rem; font-size: 1.5rem;">Emergency Protocol</h2>
+      <button class="emergency-btn" onclick="triggerEmergency()">
+        <i class="fas fa-bell"></i>
+      </button>
+      <p style="color: white; margin-top: 1rem; font-size: 0.875rem;">Press to activate emergency evacuation protocol</p>
+    </div>
+    
+    <!-- Zone Cards -->
+    <div class="grid-2" style="margin-bottom: 2rem;">
+      <!-- Zone A -->
+      <div class="zone-card warning">
+        <div class="zone-header">
+          <div class="zone-title">Zone A - Main Shaft</div>
+          <div class="zone-status warning">Warning</div>
+        </div>
+        <div style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.875rem;">
+          <i class="fas fa-users"></i> 82 Workers | Last updated: 2 min ago
+        </div>
+        <div class="sensor-grid">
+          <div class="sensor-item">
+            <div class="sensor-icon warning"><i class="fas fa-fire"></i></div>
+            <div>
+              <div class="sensor-value">43°C</div>
+              <div class="sensor-label">Temperature</div>
+            </div>
+          </div>
+          <div class="sensor-item">
+            <div class="sensor-icon safe"><i class="fas fa-wind"></i></div>
+            <div>
+              <div class="sensor-value">21%</div>
+              <div class="sensor-label">Oxygen</div>
+            </div>
+          </div>
+          <div class="sensor-item">
+            <div class="sensor-icon safe"><i class="fas fa-smog"></i></div>
+            <div>
+              <div class="sensor-value">0.3%</div>
+              <div class="sensor-label">Methane</div>
+            </div>
+          </div>
+          <div class="sensor-item">
+            <div class="sensor-icon safe"><i class="fas fa-tachometer-alt"></i></div>
+            <div>
+              <div class="sensor-value">Normal</div>
+              <div class="sensor-label">Pressure</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Zone B -->
+      <div class="zone-card safe">
+        <div class="zone-header">
+          <div class="zone-title">Zone B - East Tunnel</div>
+          <div class="zone-status safe">Safe</div>
+        </div>
+        <div style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.875rem;">
+          <i class="fas fa-users"></i> 65 Workers | Last updated: 1 min ago
+        </div>
+        <div class="sensor-grid">
+          <div class="sensor-item">
+            <div class="sensor-icon safe"><i class="fas fa-fire"></i></div>
+            <div>
+              <div class="sensor-value">28°C</div>
+              <div class="sensor-label">Temperature</div>
+            </div>
+          </div>
+          <div class="sensor-item">
+            <div class="sensor-icon safe"><i class="fas fa-wind"></i></div>
+            <div>
+              <div class="sensor-value">20.8%</div>
+              <div class="sensor-label">Oxygen</div>
+            </div>
+          </div>
+          <div class="sensor-item">
+            <div class="sensor-icon safe"><i class="fas fa-smog"></i></div>
+            <div>
+              <div class="sensor-value">0.1%</div>
+              <div class="sensor-label">Methane</div>
+            </div>
+          </div>
+          <div class="sensor-item">
+            <div class="sensor-icon safe"><i class="fas fa-tachometer-alt"></i></div>
+            <div>
+              <div class="sensor-value">Normal</div>
+              <div class="sensor-label">Pressure</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Zone C -->
+      <div class="zone-card safe">
+        <div class="zone-header">
+          <div class="zone-title">Zone C - West Tunnel</div>
+          <div class="zone-status safe">Safe</div>
+        </div>
+        <div style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.875rem;">
+          <i class="fas fa-users"></i> 58 Workers | Last updated: 3 min ago
+        </div>
+        <div class="sensor-grid">
+          <div class="sensor-item">
+            <div class="sensor-icon safe"><i class="fas fa-fire"></i></div>
+            <div>
+              <div class="sensor-value">26°C</div>
+              <div class="sensor-label">Temperature</div>
+            </div>
+          </div>
+          <div class="sensor-item">
+            <div class="sensor-icon safe"><i class="fas fa-wind"></i></div>
+            <div>
+              <div class="sensor-value">20.5%</div>
+              <div class="sensor-label">Oxygen</div>
+            </div>
+          </div>
+          <div class="sensor-item">
+            <div class="sensor-icon safe"><i class="fas fa-smog"></i></div>
+            <div>
+              <div class="sensor-value">0.2%</div>
+              <div class="sensor-label">Methane</div>
+            </div>
+          </div>
+          <div class="sensor-item">
+            <div class="sensor-icon safe"><i class="fas fa-tachometer-alt"></i></div>
+            <div>
+              <div class="sensor-value">Normal</div>
+              <div class="sensor-label">Pressure</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Zone D -->
+      <div class="zone-card danger">
+        <div class="zone-header">
+          <div class="zone-title">Zone D - Deep Shaft</div>
+          <div class="zone-status danger">Critical</div>
+        </div>
+        <div style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.875rem;">
+          <i class="fas fa-users"></i> 43 Workers | Last updated: just now
+        </div>
+        <div class="sensor-grid">
+          <div class="sensor-item">
+            <div class="sensor-icon danger"><i class="fas fa-fire"></i></div>
+            <div>
+              <div class="sensor-value">52°C</div>
+              <div class="sensor-label">Temperature</div>
+            </div>
+          </div>
+          <div class="sensor-item">
+            <div class="sensor-icon warning"><i class="fas fa-wind"></i></div>
+            <div>
+              <div class="sensor-value">19.2%</div>
+              <div class="sensor-label">Oxygen</div>
+            </div>
+          </div>
+          <div class="sensor-item">
+            <div class="sensor-icon danger"><i class="fas fa-smog"></i></div>
+            <div>
+              <div class="sensor-value">1.8%</div>
+              <div class="sensor-label">Methane</div>
+            </div>
+          </div>
+          <div class="sensor-item">
+            <div class="sensor-icon warning"><i class="fas fa-tachometer-alt"></i></div>
+            <div>
+              <div class="sensor-value">High</div>
+              <div class="sensor-label">Pressure</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Safety Checklist -->
+    <div class="card">
+      <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Daily Safety Checklist</h3>
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; cursor: pointer;">
+          <input type="checkbox" checked style="width: 20px; height: 20px;">
+          <div style="flex: 1;">
+            <div style="font-weight: 600;">All sensors calibrated and operational</div>
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Completed by: System Admin | 06:00 AM</div>
+          </div>
+          <span class="badge badge-success">Complete</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; cursor: pointer;">
+          <input type="checkbox" checked style="width: 20px; height: 20px;">
+          <div style="flex: 1;">
+            <div style="font-weight: 600;">Emergency equipment inspection</div>
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Completed by: Safety Officer | 07:30 AM</div>
+          </div>
+          <span class="badge badge-success">Complete</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; cursor: pointer;">
+          <input type="checkbox" style="width: 20px; height: 20px;">
+          <div style="flex: 1;">
+            <div style="font-weight: 600;">Zone D ventilation system check</div>
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Due: 12:00 PM</div>
+          </div>
+          <span class="badge badge-warning">Pending</span>
+        </label>
+        <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; cursor: pointer;">
+          <input type="checkbox" style="width: 20px; height: 20px;">
+          <div style="flex: 1;">
+            <div style="font-weight: 600;">Worker safety briefing</div>
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Due: 02:00 PM</div>
+          </div>
+          <span class="badge badge-warning">Pending</span>
+        </label>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Mobile Navigation -->
+  <div class="mobile-nav">
+    <div class="mobile-nav-grid">
+      <a href="dashboard.html" class="mobile-nav-item">
+        <i class="fas fa-th-large"></i>
+        <span>Dashboard</span>
+      </a>
+      <a href="safety.html" class="mobile-nav-item active">
+        <i class="fas fa-shield-alt"></i>
+        <span>Safety</span>
+      </a>
+      <a href="incidents.html" class="mobile-nav-item">
+        <i class="fas fa-file-medical"></i>
+        <span>Report</span>
+      </a>
+      <a href="productivity.html" class="mobile-nav-item">
+        <i class="fas fa-chart-line"></i>
+        <span>Production</span>
+      </a>
+      <a href="profile.html" class="mobile-nav-item">
+        <i class="fas fa-user-circle"></i>
+        <span>Profile</span>
+      </a>
+    </div>
+  </div>
+  
+  <script src="../assets/js/app.js"></script>
+  <script>
+    function triggerEmergency() {
+      if (confirm('⚠️ EMERGENCY ALERT\n\nThis will activate emergency evacuation protocol and notify all personnel.\n\nAre you sure?')) {
+        showToast('🚨 Emergency alert sent to all zones!', 'error');
+        setTimeout(() => {
+          showToast('Evacuation protocol activated', 'success');
+        }, 2000);
+      }
+    }
+    
+    // Auto-refresh sensor data (simulation)
+    setInterval(() => {
+      console.log('Refreshing sensor data...');
+    }, 30000);
+  </script>
+  
+</body>
+</html>

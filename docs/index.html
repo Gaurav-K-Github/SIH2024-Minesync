@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - MineSafe Pro</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#fbbf24">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      background: #1a1a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="%231a1a1a"/><path d="M0 0 L100 100 M100 0 L0 100" stroke="%23ffffff" stroke-width="0.5" opacity="0.02"/></svg>');
+      opacity: 0.5;
+      pointer-events: none;
+    }
+    
+    .login-wrapper {
+      width: 100%;
+      max-width: 1400px;
+      height: 90vh;
+      max-height: 700px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: linear-gradient(145deg, rgba(42, 42, 42, 0.85) 0%, rgba(31, 31, 31, 0.85) 100%),
+                  url('assets/icons/Indexbg.png');
+      background-size: cover;
+      background-position: center;
+      background-blend-mode: overlay;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 
+        0 30px 90px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 193, 7, 0.1);
+      margin: 20px;
+      position: relative;
+    }
+    
+    /* LEFT PANEL - BRANDING */
+    .left-panel {
+      background: transparent;
+      padding: 4rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .branding {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    
+    .logo-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .logo-icon {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #000;
+      box-shadow: 
+        0 8px 20px rgba(255, 193, 7, 0.3),
+        inset 0 -2px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .logo-text h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.25rem;
+    }
+    
+    .tagline {
+      color: #999;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+    
+    .tagline span {
+      color: #ffc107;
+    }
+    
+    .features-list {
+      list-style: none;
+      margin-top: auto;
+      padding-top: 2rem;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0;
+      transition: all 0.3s;
+    }
+    
+    .feature-item:hover {
+      transform: translateX(4px);
+    }
+    
+    .feature-item:hover .feature-icon {
+      background: rgba(255, 193, 7, 0.2);
+      transform: scale(1.1);
+    }
+    
+    .feature-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 193, 7, 0.1);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffc107;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+    }
+    
+    .feature-text {
+      color: #e5e5e5;
+      font-size: 0.9375rem;
+      font-weight: 500;
+    }
+    
+    .footer-text {
+      text-align: center;
+      color: #666;
+      font-size: 0.75rem;
+      margin-top: auto;
+      padding-top: 2rem;
+    }
+    
+    /* RIGHT PANEL - LOGIN FORM */
+    .right-panel {
+      background: transparent;
+      padding: 4rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    
+    .login-card {
+      width: 100%;
+      max-width: 450px;
+      background: rgba(35, 35, 35, 0.95);
+      border-radius: 20px;
+      padding: 2.5rem;
+      border: 1px solid rgba(80, 80, 80, 0.4);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .login-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .login-header h2 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+    }
+    
+    .login-header p {
+      color: #999;
+      font-size: 0.875rem;
+    }
+    
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    
+    .input-wrapper {
+      position: relative;
+    }
+    
+    .input-wrapper i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      font-size: 1rem;
+      z-index: 1;
+      transition: color 0.3s;
+    }
+    
+    .input-wrapper:has(.form-input:focus) i {
+      color: #ffc107;
+    }
+    
+    .form-input {
+      width: 100%;
+      padding: 0.875rem 3.5rem 0.875rem 3rem;
+      background: rgba(25, 25, 25, 0.8);
+      border: 1.5px solid rgba(80, 80, 80, 0.5);
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    
+    .form-input::placeholder {
+      color: #666;
+      font-weight: 400;
+    }
+    
+    .form-input:focus {
+      outline: none;
+      border-color: #ffc107;
+      background: rgba(30, 30, 30, 0.9);
+      box-shadow: 0 0 0 1px rgba(255, 193, 7, 0.3);
+    }
+    
+    .password-toggle {
+      position: absolute;
+      right: 2.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #999;
+      cursor: pointer;
+      padding: 0.5rem;
+      z-index: 2;
+      transition: color 0.3s ease;
+    }
+    
+    .password-toggle:hover {
+      color: #ffc107;
+    }
+    
+    .password-toggle i {
+      font-size: 1rem;
+      display: block;
+    }
+    
+    .role-selector {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding: 0.5rem 0.25rem;
+      margin: 0 -0.25rem 1.5rem;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      scroll-behavior: smooth;
+      scroll-snap-type: x mandatory;
+      cursor: grab;
+    }
+    
+    .role-selector:active {
+      cursor: grabbing;
+    }
+    
+    .role-selector::-webkit-scrollbar {
+      display: none;
+    }
+    
+    .role-selector::before,
+    .role-selector::after {
+      content: '';
+      flex-shrink: 0;
+      width: 0.25rem;
+    }
+    
+    .role-pill {
+      padding: 0.625rem 1.25rem;
+      background: rgba(40, 40, 40, 0.8);
+      border: 1.5px solid rgba(80, 80, 80, 0.5);
+      border-radius: 24px;
+      color: #bbb;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.10s;
+      white-space: nowrap;
+      flex-shrink: 0;
+      user-select: none;
+      scroll-snap-align: center;
+    }
+    
+    .role-pill:hover {
+      border-color: rgba(255, 193, 7, 0.6);
+      background: rgba(50, 50, 50, 0.9);
+      transform: translateY(-1px);
+    }
+    
+    .role-pill.active {
+      background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+      border-color: transparent;
+      color: #000;
+      box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+      font-weight: 700;
+    }
+    
+    .remember-forgot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+    }
+    
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      color: #bbb;
+      font-weight: 500;
+    }
+    
+    .remember-me input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #ffc107;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    
+    .forgot-link {
+      color: #ffc107;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    
+    .forgot-link:hover {
+      color: #ffd54f;
+    }
+    
+    .btn-primary {
+      width: 100%;
+      padding: 0.875rem;
+      background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+      border: none;
+      border-radius: 12px;
+      color: #000;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 4px 16px rgba(255, 193, 7, 0.35);
+      margin-bottom: 0.875rem;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #ffd54f 0%, #ffb74d 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(255, 193, 7, 0.45);
+    }
+    
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+    
+    .btn-secondary {
+      width: 100%;
+      padding: 0.875rem;
+      background: rgba(30, 30, 30, 0.6);
+      border: 1.5px solid rgba(80, 80, 80, 0.6);
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 1rem;
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(40, 40, 40, 0.8);
+      border-color: rgba(255, 193, 7, 0.5);
+    }
+    
+    .btn-secondary:active {
+      transform: translateY(0);
+    }
+    
+    .login-footer {
+      text-align: center;
+      font-size: 0.875rem;
+      color: #888;
+    }
+    
+    .login-footer a {
+      color: #ffc107;
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    
+    .login-footer a:hover {
+      color: #ffd54f;
+      text-decoration: underline;
+    }
+    
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .login-wrapper {
+        grid-template-columns: 1fr;
+        height: auto;
+        max-height: none;
+      }
+      
+      .left-panel {
+        display: none;
+      }
+      
+      .right-panel {
+        min-height: 100vh;
+      }
+    }
+    
+    @media (max-width: 640px) {
+      .login-wrapper {
+        margin: 0;
+        border-radius: 0;
+        min-height: 100vh;
+      }
+      
+      .right-panel {
+        padding: 2rem 1.5rem;
+      }
+      
+      .login-card {
+        padding: 2rem 1.5rem;
+      }
+      
+      .login-header h2 {
+        font-size: 1.5rem;
+      }
+      
+      .role-selector {
+        margin: 0 -1.5rem 1.5rem;
+        padding: 0.5rem 1.5rem;
+      }
+      
+      .role-pill {
+        font-size: 0.75rem;
+        padding: 0.5rem 1rem;
+      }
+    }
+    
+    /* FOOTER */
+    .page-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: transparent;
+      padding: 1rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #666;
+      z-index: 1000;
+      pointer-events: auto;
+    }
+    
+    .page-footer a {
+      pointer-events: auto;
+      cursor: pointer;
+    }
+    
+    .page-footer span {
+      opacity: 0.6;
+      transition: opacity 0.3s;
+    }
+    
+    .page-footer a:hover span {
+      opacity: 1;
+    }
+    
+    @media (max-width: 768px) {
+      .page-footer {
+        font-size: 0.6875rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="login-wrapper">
+    <!-- LEFT PANEL - BRANDING & FEATURES -->
+    <div class="left-panel">
+      <div class="branding">
+        <div class="logo-section">
+          <div class="logo-icon">
+            <i class="fas fa-hard-hat"></i>
+          </div>
+          <div class="logo-text">
+            <h1>MineSafe Pro</h1>
+          </div>
+        </div>
+        <p class="tagline">Safety <span>•</span> Productivity <span>•</span> Compliance</p>
+        
+        <ul class="features-list">
+          <li class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="feature-text">Real-time Hazard Alerts</div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-clipboard-list"></i>
+            </div>
+            <div class="feature-text">Incident Reporting & Tracking</div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="feature-text">Shift Productivity Analytics</div>
+          </li>
+          <li class="feature-item">
+            <div class="feature-icon">
+              <i class="fas fa-cogs"></i>
+            </div>
+            <div class="feature-text">Equipment Monitoring</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- RIGHT PANEL - LOGIN FORM -->
+    <div class="right-panel">
+      <div class="login-card">
+        <div class="login-header">
+          <h2>Welcome Back</h2>
+          <p>Login to manage mine safety and productivity.</p>
+        </div>
+        
+        <form id="loginForm">
+          <div class="form-group">
+            <div class="input-wrapper">
+              <i class="fas fa-envelope"></i>
+              <input type="text" class="form-input" id="email" placeholder="Email / Phone" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="input-wrapper">
+              <i class="fas fa-lock"></i>
+              <input type="password" class="form-input" id="password" placeholder="Password" required>
+              <button type="button" class="password-toggle" onclick="togglePassword()">
+                <i class="fas fa-eye" id="toggleIcon"></i>
+              </button>
+            </div>
+          </div>
+          
+          <div class="role-selector">
+            <div class="role-pill" data-role="admin">Admin</div>
+            <div class="role-pill" data-role="supervisor">Supervisor</div>
+            <div class="role-pill active" data-role="worker">Worker</div>
+          </div>
+          
+          <div class="remember-forgot">
+            <label class="remember-me">
+              <input type="checkbox" id="remember">
+              <span>Remember me</span>
+            </label>
+            <a href="#" class="forgot-link">Forgot Password?</a>
+          </div>
+          
+          <button type="submit" class="btn-primary">Login</button>
+          <button type="button" class="btn-secondary" onclick="loginWithOTP()">Login with OTP</button>
+          
+          <div class="login-footer">
+            <a href="#">Request access</a> / <a href="#">Create account</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    // Role selector with slide/drag functionality
+    const roleSelector = document.querySelector('.role-selector');
+    const rolePills = document.querySelectorAll('.role-pill');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+    
+    // Mouse drag events
+    roleSelector.addEventListener('mousedown', (e) => {
+      isDown = true;
+      roleSelector.style.cursor = 'grabbing';
+      startX = e.pageX - roleSelector.offsetLeft;
+      scrollLeft = roleSelector.scrollLeft;
+    });
+    
+    roleSelector.addEventListener('mouseleave', () => {
+      isDown = false;
+      roleSelector.style.cursor = 'grab';
+    });
+    
+    roleSelector.addEventListener('mouseup', () => {
+      isDown = false;
+      roleSelector.style.cursor = 'grab';
+      snapToNearestPill();
+    });
+    
+    roleSelector.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      e.preventDefault();
+      const x = e.pageX - roleSelector.offsetLeft;
+      const walk = (x - startX) * 2;
+      roleSelector.scrollLeft = scrollLeft - walk;
+    });
+    
+    // Touch drag events
+    roleSelector.addEventListener('touchend', () => {
+      setTimeout(snapToNearestPill, 100);
+    });
+    
+    // Snap to nearest pill and activate it
+    function snapToNearestPill() {
+      const containerRect = roleSelector.getBoundingClientRect();
+      const containerCenter = containerRect.left + containerRect.width / 2;
+      
+      let closestPill = null;
+      let closestDistance = Infinity;
+      
+      rolePills.forEach(pill => {
+        const pillRect = pill.getBoundingClientRect();
+        const pillCenter = pillRect.left + pillRect.width / 2;
+        const distance = Math.abs(containerCenter - pillCenter);
+        
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestPill = pill;
+        }
+      });
+      
+      if (closestPill) {
+        // Scroll to center the pill
+        const pillRect = closestPill.getBoundingClientRect();
+        const containerRect = roleSelector.getBoundingClientRect();
+        const scrollAmount = pillRect.left - containerRect.left - (containerRect.width / 2) + (pillRect.width / 2);
+        
+        roleSelector.scrollBy({
+          left: scrollAmount,
+          behavior: 'smooth'
+        });
+        
+        // Activate the pill
+        rolePills.forEach(p => p.classList.remove('active'));
+        closestPill.classList.add('active');
+      }
+    }
+    
+    // Click to select and scroll to center
+    rolePills.forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        e.preventDefault();
+        rolePills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        
+        // Scroll to center the clicked pill
+        const pillRect = pill.getBoundingClientRect();
+        const containerRect = roleSelector.getBoundingClientRect();
+        const scrollAmount = pillRect.left - containerRect.left - (containerRect.width / 2) + (pillRect.width / 2);
+        
+        roleSelector.scrollBy({
+          left: scrollAmount,
+          behavior: 'smooth'
+        });
+      });
+    });
+    
+    // Initialize: center the active pill on load
+    window.addEventListener('load', () => {
+      const activePill = document.querySelector('.role-pill.active');
+      if (activePill) {
+        const pillRect = activePill.getBoundingClientRect();
+        const containerRect = roleSelector.getBoundingClientRect();
+        const scrollAmount = pillRect.left - containerRect.left - (containerRect.width / 2) + (pillRect.width / 2);
+        
+        roleSelector.scrollBy({
+          left: scrollAmount,
+          behavior: 'auto'
+        });
+      }
+    });
+    
+    // Password toggle
+    function togglePassword() {
+      const passwordInput = document.getElementById('password');
+      const toggleIcon = document.getElementById('toggleIcon');
+      
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        toggleIcon.classList.remove('fa-eye');
+        toggleIcon.classList.add('fa-eye-slash');
+      } else {
+        passwordInput.type = 'password';
+        toggleIcon.classList.remove('fa-eye-slash');
+        toggleIcon.classList.add('fa-eye');
+      }
+    }
+    
+    // Login with OTP
+    function loginWithOTP() {
+      alert('OTP login functionality would be implemented here');
+    }
+    
+    // Login form submission
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const selectedRole = document.querySelector('.role-pill.active').dataset.role;
+      
+      // Store user data
+      localStorage.setItem('minesafe_user', JSON.stringify({
+        name: 'John Doe',
+        role: selectedRole,
+        email: email
+      }));
+      
+      // Redirect to dashboard
+      window.location.href = 'pages/dashboard.html';
+    });
+    
+    // Register service worker
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+  </script>
+  
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <a href="pages/timeline.html" style="color:inherit;text-decoration:none;transition:color 0.3s" onmouseover="this.style.color='#ffc107'" onmouseout="this.style.color='inherit'">
+      <span>© MineSafe Pro | Powered by Smart Monitoring</span>
+    </a>
+  </footer>
+  
+</body>
+</html>
