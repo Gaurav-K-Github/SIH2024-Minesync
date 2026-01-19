@@ -51,7 +51,7 @@ Your MineSafe Pro project has been successfully documented and pushed to GitHub!
 
 ### 3. Git Repository Updated 🚀
 - ✅ All changes committed with comprehensive message
-- ✅ Pushed to GitHub: `https://github.com/Gaurav-K-Github/SIH2024-Minesync`
+- ✅ Pushed to GitHub: `https://github.com/Gaurav-K-Github/SIH2024-MineSafePro`
 - ✅ Created and pushed version tag: `v2.1.0`
 - ✅ 23 files changed, 4,878 insertions
 
@@ -86,7 +86,7 @@ Your MineSafe Pro project has been successfully documented and pushed to GitHub!
 
 ## 🌐 GitHub Repository
 
-**URL**: https://github.com/Gaurav-K-Github/SIH2024-Minesync
+**URL**: https://github.com/Gaurav-K-Github/SIH2024-MineSafePro
 
 **Latest Commit**: `9326407`  
 **Latest Tag**: `v2.1.0`  
@@ -97,7 +97,7 @@ Your MineSafe Pro project has been successfully documented and pushed to GitHub!
 ## 📋 Repository Structure
 
 ```
-SIH2024-Minesync/
+SIH2024-MineSafePro/
 ├── .git/                          # Git repository data
 ├── .gitignore                     # Git ignore rules
 ├── LICENSE                        # MIT License
@@ -152,9 +152,9 @@ SIH2024-Minesync/
 3. **Create GitHub Pages** (Optional):
    - Go to Settings → Pages
    - Select branch: `main`
-   - Select folder: `/` (root) or `/frontend`
+   - Select folder: `/docs`
    - Save
-   - Your site will be live at: `https://gaurav-k-github.github.io/SIH2024-Minesync/`
+   - Your site will be live at: `https://gaurav-k-github.github.io/SIH2024-MineSafePro/`
 
 4. **Add Screenshot/GIF** to README:
    - Take screenshots of your application
@@ -179,10 +179,11 @@ SIH2024-Minesync/
 
 ## 📝 Important Links
 
-- **Repository**: https://github.com/Gaurav-K-Github/SIH2024-Minesync
-- **Issues**: https://github.com/Gaurav-K-Github/SIH2024-Minesync/issues
-- **Pull Requests**: https://github.com/Gaurav-K-Github/SIH2024-Minesync/pulls
-- **Releases**: https://github.com/Gaurav-K-Github/SIH2024-Minesync/releases
+- **Repository**: https://github.com/Gaurav-K-Github/SIH2024-MineSafePro
+- **Issues**: https://github.com/Gaurav-K-Github/SIH2024-MineSafePro/issues
+- **Pull Requests**: https://github.com/Gaurav-K-Github/SIH2024-MineSafePro/pulls
+- **Releases**: https://github.com/Gaurav-K-Github/SIH2024-MineSafePro/releases
+- **Live Demo**: https://gaurav-k-github.github.io/SIH2024-MineSafePro/
 
 ---
 

@@ -179,4 +179,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-For detailed commit history, see [GitHub Commits](https://github.com/Gaurav-K-Github/SIH2024-Minesync/commits/)
+For detailed commit history, see [GitHub Commits](https://github.com/Gaurav-K-Github/SIH2024-MineSafePro/commits/)

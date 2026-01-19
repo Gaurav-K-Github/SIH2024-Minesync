@@ -88,7 +88,7 @@ git init
 
 ### 2. Add remote repository
 ```bash
-git remote add origin https://github.com/Gaurav-K-Github/SIH2024-Minesync.git
+git remote add origin https://github.com/Gaurav-K-Github/SIH2024-MineSafePro.git
 ```
 
 ### 3. Verify remote

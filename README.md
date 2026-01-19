@@ -1,14 +1,16 @@
 ﻿# MineSafe Pro – Smart India Hackathon 2024
 
+[![Live Demo](https://img.shields.io/badge/demo-live-success.svg)](https://gaurav-k-github.github.io/SIH2024-MineSafePro/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PWA: Enabled](https://img.shields.io/badge/PWA-Enabled-blue.svg)](https://web.dev/progressive-web-apps/)
-[![Version](https://img.shields.io/badge/version-2.1-orange.svg)](https://github.com/Gaurav-K-Github/SIH2024-Minesync)
+[![Version](https://img.shields.io/badge/version-2.1-orange.svg)](https://github.com/Gaurav-K-Github/SIH2024-MineSafePro)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow.svg)](https://www.javascript.com/)
 [![Chart.js](https://img.shields.io/badge/Chart.js-4.4.0-ff6384.svg)](https://www.chartjs.org/)
 
 **Problem Statement**: *An app and web-based software for productivity and safety management of coal mines*  
 **Project Type**: Progressive Web Application (PWA)  
-**Repository**: [MineSafe Pro GitHub](https://github.com/Gaurav-K-Github/SIH2024-Minesync)  
+**Repository**: [MineSafe Pro GitHub](https://github.com/Gaurav-K-Github/SIH2024-MineSafePro)  
+**Live Demo**: [https://gaurav-k-github.github.io/SIH2024-MineSafePro/](https://gaurav-k-github.github.io/SIH2024-MineSafePro/)  
 **Current Version**: v2.1.0
 
 ---
@@ -154,7 +156,7 @@ MineSafe Pro is a **modern Progressive Web Application** designed for comprehens
 ## 📁 Project Structure
 
 ```
-SIH2024-Minesync/
+SIH2024-MineSafePro/
 ├── frontend/
 │   ├── assets/
 │   │   ├── css/
@@ -203,8 +205,8 @@ SIH2024-Minesync/
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/Gaurav-K-Github/SIH2024-Minesync.git
-cd SIH2024-Minesync
+git clone https://github.com/Gaurav-K-Github/SIH2024-MineSafePro.git
+cd SIH2024-MineSafePro
 ```
 
 2. **Navigate to frontend directory**
@@ -417,7 +419,7 @@ merge, publish, distribute, sublicense, and/or sell copies of the Software.
 ## 👥 Team & Credits
 
 **Smart India Hackathon 2024**  
-**Project Code**: SIH2024-Minesync  
+**Project Name**: MineSafe Pro  
 **Team Lead**: Gaurav Kumar
 
 ### Acknowledgments
@@ -431,14 +433,14 @@ merge, publish, distribute, sublicense, and/or sell copies of the Software.
 ## 📬 Contact & Support
 
 ### Get in Touch
-- **GitHub Issues**: [Report bugs or request features](https://github.com/Gaurav-K-Github/SIH2024-Minesync/issues)
+- **GitHub Issues**: [Report bugs or request features](https://github.com/Gaurav-K-Github/SIH2024-MineSafePro/issues)
 - **Email**: kashvns705@gmail.com
 - **LinkedIn**: [Gaurav Kumar](https://www.linkedin.com/in/gaurav-kumar/)
 
 ### Support
 For technical support or questions:
 1. Check [QUICKSTART.md](QUICKSTART.md) for quick answers
-2. Browse [existing issues](https://github.com/Gaurav-K-Github/SIH2024-Minesync/issues)
+2. Browse [existing issues](https://github.com/Gaurav-K-Github/SIH2024-MineSafePro/issues)
 3. Create a new issue with detailed description
 4. Email for collaboration opportunities
 
@@ -473,7 +475,7 @@ If you find this project useful, please consider:
 
 **Smart India Hackathon 2024 | Track: Productivity & Safety Technology**
 
-[⭐ Star this repo](https://github.com/Gaurav-K-Github/SIH2024-Minesync) • [🐛 Report Bug](https://github.com/Gaurav-K-Github/SIH2024-Minesync/issues) • [💡 Request Feature](https://github.com/Gaurav-K-Github/SIH2024-Minesync/issues) • [📖 Documentation](https://github.com/Gaurav-K-Github/SIH2024-Minesync/wiki)
+[🚀 Live Demo](https://gaurav-k-github.github.io/SIH2024-MineSafePro/) • [⭐ Star this repo](https://github.com/Gaurav-K-Github/SIH2024-MineSafePro) • [🐛 Report Bug](https://github.com/Gaurav-K-Github/SIH2024-MineSafePro/issues) • [💡 Request Feature](https://github.com/Gaurav-K-Github/SIH2024-MineSafePro/issues)
 
 **Last Updated**: January 20, 2026 | **Version**: 2.1.0
 

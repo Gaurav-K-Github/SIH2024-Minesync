@@ -46,8 +46,8 @@ Enhancement suggestions are tracked as GitHub issues. When creating an enhanceme
 1. Fork the repo
 2. Clone your fork:
 ```bash
-git clone https://github.com/YOUR_USERNAME/SIH2024-Minesync.git
-cd SIH2024-Minesync
+git clone https://github.com/YOUR_USERNAME/SIH2024-MineSafePro.git
+cd SIH2024-MineSafePro
 ```
 
 3. Create a branch:
